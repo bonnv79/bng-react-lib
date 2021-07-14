@@ -11,7 +11,7 @@ npm install --save bng-react-lib
 ```
 
 ## Demo
-<a href="https://ngovanbon16.github.io/bng-react-lib/">Click open demo<a/>
+<a href="https://bonnv79.github.io/bng-react-lib/">Click open demo<a/>
 
 ## Usage
 
@@ -40,4 +40,4 @@ class Example extends Component {
 
 ## License
 
-MIT © [ngovanbon16](https://github.com/ngovanbon16)
+MIT © [bonnv79](https://github.com/bonnv79)
