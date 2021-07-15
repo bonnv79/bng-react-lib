@@ -1,35 +1,27 @@
 import React from 'react';
-import { ChipsArray } from 'bng-react-lib';
-import BngLib from 'bng-react-lib';
-import 'bng-react-lib/dist/index.css';
-import styles from './styles.module.css';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Home from './demo';
+import DelaySearchDemo from './demo/DelaySearchDemo';
+import ChipsArrayDemo from './demo/ChipsArrayDemo';
 
-const { Button } = BngLib;
-
-const initData = [
-  { key: 0, label: 'Angular', icon: 'react' },
-  { key: 1, label: 'jQuery' },
-  { key: 2, label: 'Polymer' },
-  { key: 3, label: 'React' },
-  { key: 4, label: 'Vue.js' },
+const data = [
+  {
+    id: 'DelaySearchDemo',
+    label: 'Delay Search',
+    icon: <ChevronRightIcon />,
+    component: <DelaySearchDemo />
+  },
+  {
+    id: 'ChipsArrayDemo',
+    label: 'Chips Array',
+    icon: <ChevronRightIcon />,
+    component: <ChipsArrayDemo />,
+    hidden: true
+  }
 ];
 
 const App = () => {
-  const [data, setData] = React.useState(initData);
-
-  const reloadData = () => {
-    setData(initData);
-  }
-
-  return <div>
-    <Button onClick={reloadData} color="primary">Reload data</Button>
-    <div>
-      <ChipsArray data={data} onChange={setData} />
-    </div>
-    <prev className={styles.textarea}>
-      const dataDemo = {JSON.stringify(data, undefined, 2)}
-    </prev>
-  </div>
+  return <Home title='BNG Demo' data={data} />;
 }
 
 export default App
