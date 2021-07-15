@@ -15,6 +15,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { Paper } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -80,6 +81,9 @@ const useStyles = makeStyles((theme) => ({
   },
   tabActived: {
     backgroundColor: '#98cfff'
+  },
+  paper: {
+    padding: 16
   }
 }));
 
@@ -176,11 +180,11 @@ export default function Home({
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <div>
+        <Paper component="div" className={classes.paper}>
           {
             component && component
           }
-        </div>
+        </Paper>
       </main>
     </div>
   );

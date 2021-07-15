@@ -1,6 +1,8 @@
 import React from 'react';
-import BngLib from 'bng-react-lib';
-import { Button } from '@material-ui/core';
+import { Components } from 'bng-react-lib';
+import FormLabel from './Common/FormLabel';
+
+const { ChipsArray } = Components;
 
 const initData = [
   { key: 0, label: 'Angular', icon: 'react' },
@@ -17,15 +19,19 @@ function ChipsArrayDemo() {
     setData(initData);
   }
 
-  return <div>
-    <div style={{ display: 'flex' }}>
-      <Button onClick={reloadData} color="primary">Reload data</Button>
-      <BngLib.ChipsArray data={data} onChange={setData} />
-    </div>
+  return (
     <div>
-      const dataDemo = {JSON.stringify(data, undefined, 2)}
+      <FormLabel label=''>
+        <button onClick={reloadData} color="primary">Reload data</button>
+      </FormLabel>
+      <FormLabel label='Chips Array'>
+        <ChipsArray data={data} onChange={setData} />
+      </FormLabel>
+      <FormLabel label='Data object'>
+        {JSON.stringify(data, undefined, 2)}
+      </FormLabel>
     </div>
-  </div>
+  )
 }
 
 export default ChipsArrayDemo;

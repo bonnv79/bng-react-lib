@@ -15,8 +15,7 @@ const data = [
     id: 'ChipsArrayDemo',
     label: 'Chips Array',
     icon: <ChevronRightIcon />,
-    component: <ChipsArrayDemo />,
-    hidden: true
+    component: <ChipsArrayDemo />
   }
 ];
 

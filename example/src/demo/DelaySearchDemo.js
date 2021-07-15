@@ -1,18 +1,9 @@
 import React from 'react';
-import BngLib from 'bng-react-lib';
+import { Utils } from 'bng-react-lib';
+import FormLabel from './Common/FormLabel';
 
-let delaySearch = BngLib.utils.makeDelaySearch();
-
-const FormLabel = ({ children, label }) => (
-  <div style={{ display: 'flex' }}>
-    <div style={{ marginRight: 10 }}>
-      {label}
-    </div>
-    <div>
-      {children}
-    </div>
-  </div>
-)
+const { makeDelaySearch } = Utils;
+let delaySearch = makeDelaySearch();
 
 const DelaySearchDemo = () => {
   const [searchKey, setSearchKey] = React.useState('');
