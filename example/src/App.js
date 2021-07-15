@@ -3,6 +3,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Home from './demo';
 import DelaySearchDemo from './demo/DelaySearchDemo';
 import ChipsArrayDemo from './demo/ChipsArrayDemo';
+import VirtualizedTableDemo from './demo/VirtualizedTableDemo';
 
 const data = [
   {
@@ -16,7 +17,13 @@ const data = [
     label: 'Chips Array',
     icon: <ChevronRightIcon />,
     component: <ChipsArrayDemo />
-  }
+  },
+  {
+    id: 'VirtualizedTableDemo',
+    label: 'Virtualized Table',
+    icon: <ChevronRightIcon />,
+    component: <VirtualizedTableDemo />
+  },
 ];
 
 const App = () => {

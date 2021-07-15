@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 
@@ -18,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ChipsArray({
-  data: chipData = [],
-  onChange = () => { }
+  data: chipData,
+  onChange
 }) {
   const classes = useStyles();
 
@@ -48,5 +49,15 @@ function ChipsArray({
     </Paper>
   );
 }
+
+ChipsArray.defaultProps = {
+  data: [],
+  onChange: () => { }
+};
+
+ChipsArray.propTypes = {
+  data: PropTypes.arrayOf(Object),
+  onChange: PropTypes.func
+};
 
 export default ChipsArray;
