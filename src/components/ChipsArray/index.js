@@ -40,6 +40,7 @@ function ChipsArray({
               label={data.label}
               onDelete={handleDelete(data)}
               className={classes.chip}
+              size="small"
             />
           </li>
         );
