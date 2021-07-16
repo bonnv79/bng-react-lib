@@ -24,7 +24,7 @@ const data = [
 ];
 
 const App = () => {
-  return <Home title='BNG Demo' data={data} version="1.0.6" />;
+  return <Home title='BNG Demo' data={data} version="1.0.7" />;
 }
 
 export default App

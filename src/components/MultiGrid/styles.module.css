@@ -1,9 +1,17 @@
 /* add css module styles here (optional) */
 
 .cell {
-  display: flex;
+  flex: 1;
+  padding: 0px 0px 0px 16px;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+  overflow: hidden;
   align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid #eee;
-  border-right: 1px solid #eee;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.cell > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

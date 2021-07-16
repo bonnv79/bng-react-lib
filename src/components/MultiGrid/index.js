@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AutoSizer, MultiGrid as MultiGridVirtualized } from 'react-virtualized';
+import { AutoSizer } from 'react-virtualized';
+import MultiGridVirtualized from './MultiGrid';
 import styles from './styles.module.css';
 
 const STYLE = {
@@ -20,22 +21,86 @@ const STYLE_TOP_RIGHT_GRID = {
   fontWeight: 'bold',
 };
 
-class MultiGrid extends React.PureComponent {
-  cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
+const getMapColumns = (columns) => {
+  let totalWidth = 0;
+
+  columns.forEach((col, index) => {
+    let { width } = col;
+    width = Number(width) || 100;
+    columns[index].width = width;
+    totalWidth += width;
+  });
+
+  columns.forEach((col, index) => {
+    const { width } = col;
+    columns[index].percent = Math.round((width / totalWidth) * 100) / 100;
+  });
+
+  return columns;
+};
+
+const getMapRows = (rows) => {
+  return rows;
+};
+
+class MultiGrid extends React.Component {
+  state = {
+    columns: [],
+    rows: []
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.columns !== state.columns || props.rows !== state.rows) {
+      return {
+        columns: getMapColumns(props.columns),
+        rows: getMapRows(props.rows)
+      };
+    }
+    return null;
+  }
+
+  headerCellRenderer = ({ key, columnIndex, style }) => {
+    const { columns } = this.state;
+    const { label } = columns[columnIndex];
+
     return (
-      <div className={styles.cell} key={key} style={style}>
-        {columnIndex}, {rowIndex}
+      <div key={key} className={styles.cell} style={style}>
+        <span title={label}>{label}</span>
       </div>
     );
   }
 
-  render() {
-    const { ...props } = this.props;
+  cellRenderer = ({ key, columnIndex, rowIndex, style }) => {
+    if (rowIndex === 0) {
+      return this.headerCellRenderer({ key, columnIndex, style, rowIndex });
+    }
+
+    const { rows, columns } = this.state;
+    const { dataKey } = columns[columnIndex];
+    const label = rows[rowIndex - 1][dataKey];
+
     return (
-      <AutoSizer disableHeight={false}>
+      <div key={key} className={styles.cell} style={style}>
+        <span title={label}>{label}</span>
+      </div>
+    );
+  }
+
+  getColumnWidth = (gridWidth) => ({ index }) => {
+    const { columns } = this.state;
+    const { width, percent } = columns[index];
+
+    return Math.max(gridWidth * percent, width);
+  }
+
+  render() {
+    const { fixedRowCount, ...props } = this.props;
+    const { rows, columns } = this.state;
+
+    return (
+      <AutoSizer>
         {({ width, height }) => (
           <MultiGridVirtualized
-            {...props}
             height={height}
             width={width}
             enableFixedColumnScroll
@@ -46,10 +111,12 @@ class MultiGrid extends React.PureComponent {
             styleBottomLeftGrid={STYLE_BOTTOM_LEFT_GRID}
             styleTopLeftGrid={STYLE_TOP_LEFT_GRID}
             styleTopRightGrid={STYLE_TOP_RIGHT_GRID}
-            columnWidth={75}
-            columnCount={50}
-            rowCount={100}
+            fixedRowCount={fixedRowCount + 1}
+            columnCount={columns.length}
+            columnWidth={this.getColumnWidth(width)}
+            rowCount={rows.length + 1}
             cellRenderer={this.cellRenderer}
+            {...props}
           />
         )}
       </AutoSizer>
@@ -59,10 +126,12 @@ class MultiGrid extends React.PureComponent {
 
 MultiGrid.defaultProps = {
   fixedColumnCount: 0,
-  fixedRowCount: 1,
+  fixedRowCount: 0,
   scrollToColumn: 0,
   scrollToRow: 0,
-  rowHeight: 40
+  rowHeight: 40,
+  rows: [],
+  columns: []
 };
 
 MultiGrid.propTypes = {
@@ -70,6 +139,8 @@ MultiGrid.propTypes = {
   fixedRowCount: PropTypes.number,
   scrollToColumn: PropTypes.number,
   scrollToRow: PropTypes.number,
+  rows: PropTypes.arrayOf(Object),
+  columns: PropTypes.arrayOf(Object)
 };
 
 export default MultiGrid;
