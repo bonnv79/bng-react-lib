@@ -4,6 +4,7 @@ import {
   ContentBox,
 } from '../common/ContentBox';
 import { LabeledInput, InputRow } from '../common/LabeledInput';
+import FormLabel from '../common/FormLabel';
 
 const { MultiGrid } = Components;
 
@@ -33,35 +34,43 @@ const columns = [
     width: 50,
     label: 'Id',
     dataKey: 'id',
+    sort: true,
+    align: 'center' // left-right-center default left
   },
   {
     width: 300,
     label: 'Dessert',
     dataKey: 'dessert',
+    sort: true,
+    align: 'left'
   },
   {
     width: 120,
     label: 'Calories\u00A0(g)',
     dataKey: 'calories',
-    numeric: true,
+    sort: true,
+    align: 'right'
   },
   {
     width: 120,
     label: 'Fat\u00A0(g)',
     dataKey: 'fat',
-    numeric: true,
+    sort: true,
+    align: 'right'
   },
   {
     width: 120,
     label: 'Carbs\u00A0(g)',
     dataKey: 'carbs',
-    numeric: true,
+    sort: true,
+    align: 'right'
   },
   {
     width: 120,
     label: 'Protein\u00A0(g)',
     dataKey: 'protein',
-    numeric: true,
+    sort: false,
+    align: 'right'
   },
 ];
 
@@ -74,6 +83,8 @@ export default class MultiGridExample extends React.PureComponent {
       fixedRowCount: 0,
       scrollToColumn: 0,
       scrollToRow: 0,
+      value: '',
+      rowData: {}
     };
 
     this._onFixedColumnCountChange = this._createEventHandler('fixedColumnCount');
@@ -105,12 +116,21 @@ export default class MultiGridExample extends React.PureComponent {
     );
   }
 
+  _onRowClick = (value, rowData, index, dataKey) => {
+    this.setState({
+      value,
+      rowData
+    })
+  }
+
   render() {
     const {
       fixedColumnCount,
       fixedRowCount,
       scrollToColumn,
-      scrollToRow
+      scrollToRow,
+      value,
+      rowData
     } = this.state;
 
     return (
@@ -131,9 +151,15 @@ export default class MultiGridExample extends React.PureComponent {
           {this._createLabeledInput('scrollToRow', this._onScrollToRowChange)}
         </InputRow>
 
-        <br />
+        <FormLabel label="Value: ">
+          {value}
+        </FormLabel>
 
-        <div style={{ width: '100%', height: 400 }}>
+        <FormLabel label="Selected row data: ">
+          {JSON.stringify(rowData)}
+        </FormLabel>
+
+        <div style={{ width: '100%', height: 360 }}>
           <MultiGrid
             rows={rows}
             columns={columns}
@@ -141,6 +167,8 @@ export default class MultiGridExample extends React.PureComponent {
             fixedRowCount={fixedRowCount}
             scrollToColumn={scrollToColumn}
             scrollToRow={scrollToRow}
+            onRowClick={this._onRowClick}
+            value={value}
           />
         </div>
       </ContentBox>

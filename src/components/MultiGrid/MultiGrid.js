@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { MultiGrid as MultiGridVirtualized } from 'react-virtualized';
 
 class MultiGrid extends React.Component {
@@ -8,7 +9,12 @@ class MultiGrid extends React.Component {
   }
 
   componentDidUpdate() {
-    this.resizeWidth();
+    const { prevWidth, width, setPrevWidth } = this.props;
+
+    if (prevWidth !== width) {
+      this.resizeWidth();
+      setPrevWidth(width);
+    }
   }
 
   resizeWidth = () => {
@@ -28,5 +34,11 @@ class MultiGrid extends React.Component {
     );
   }
 }
+
+MultiGrid.propTypes = {
+  prevWidth: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+  setPrevWidth: PropTypes.func.isRequired
+};
 
 export default MultiGrid;
