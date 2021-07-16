@@ -1,10 +1,1 @@
 /* add css module styles here (optional) */
-
-.textarea {
-  width: 500px;
-  height: 500px;
-  min-height: 30rem;
-  font-family: "Lucida Console", Monaco, monospace;
-  font-size: 0.8rem;
-  line-height: 1.2;
-}

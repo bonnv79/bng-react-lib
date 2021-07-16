@@ -1,0 +1,39 @@
+.flexContainer {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.table .ReactVirtualized__Table__headerRow {
+  padding-right: 0 !important;
+}
+
+.tableRow {
+  cursor: pointer;
+}
+
+.tableRowHover:hover {
+  background-color: #efefef;
+}
+
+.tableCell {
+  flex: 1;
+  padding: 0px 16px;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+  overflow: hidden;
+}
+
+.tableCell > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.noClick {
+  cursor: initial;
+}
+
+.selectedItem {
+  background-color: #cbe7ff;
+}

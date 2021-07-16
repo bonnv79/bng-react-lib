@@ -1,6 +1,6 @@
 import React from 'react';
 import { Utils } from 'bng-react-lib';
-import FormLabel from './Common/FormLabel';
+import FormLabel from '../common/FormLabel';
 
 const { makeDelaySearch } = Utils;
 let delaySearch = makeDelaySearch();

@@ -1,33 +1,30 @@
 import React from 'react';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Home from './demo';
+import Home from './common/Home';
 import DelaySearchDemo from './demo/DelaySearchDemo';
-import ChipsArrayDemo from './demo/ChipsArrayDemo';
 import VirtualizedTableDemo from './demo/VirtualizedTableDemo';
+import MultiGridDemo from './demo/MultiGridDemo';
+import 'bng-react-lib/dist/index.css';
 
 const data = [
   {
-    id: 'DelaySearchDemo',
-    label: 'Delay Search',
-    icon: <ChevronRightIcon />,
-    component: <DelaySearchDemo />
+    id: 'MultiGridDemo',
+    label: 'Multi Grid',
+    component: <MultiGridDemo />
   },
   {
-    id: 'ChipsArrayDemo',
-    label: 'Chips Array',
-    icon: <ChevronRightIcon />,
-    component: <ChipsArrayDemo />
+    id: 'DelaySearchDemo',
+    label: 'Delay Search',
+    component: <DelaySearchDemo />
   },
   {
     id: 'VirtualizedTableDemo',
     label: 'Virtualized Table',
-    icon: <ChevronRightIcon />,
     component: <VirtualizedTableDemo />
   },
 ];
 
 const App = () => {
-  return <Home title='BNG Demo' data={data} />;
+  return <Home title='BNG Demo' data={data} version="1.0.6" />;
 }
 
 export default App

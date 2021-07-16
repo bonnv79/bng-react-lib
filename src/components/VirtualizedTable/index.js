@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { withStyles } from '@material-ui/core/styles';
 import { AutoSizer, Column, Table } from 'react-virtualized';
-import styles from './styles';
+import styles from './styles.module.css';
 
 const keyBy = (array) => {
   const objects = {};
   if (Array.isArray(array)) {
     array.forEach(key => {
-      objects[key] = true;
+      objects[key] = key;
     });
   }
   return objects;
@@ -44,7 +43,7 @@ class VirtualizedTable extends React.PureComponent {
   }
 
   getRowClassName = ({ index }) => {
-    const { classes, onRowClick, multi } = this.props;
+    const { onRowClick, multi } = this.props;
     const { selectedItems } = this.state;
     let selected = false;
 
@@ -53,18 +52,18 @@ class VirtualizedTable extends React.PureComponent {
       selected = multi ? selectedItems[id] : selectedItems === id;
     }
 
-    return clsx(classes.tableRow, classes.flexContainer, {
-      [classes.tableRowHover]: index !== -1 && onRowClick != null,
-      [classes.selectedItem]: selected,
+    return clsx(styles.tableRow, styles.flexContainer, {
+      [styles.tableRowHover]: index !== -1 && onRowClick != null,
+      [styles.selectedItem]: selected,
     });
   };
 
   cellRenderer = ({ cellData, columnIndex }) => {
-    const { columns, classes, rowHeight, onRowClick } = this.props;
+    const { columns, rowHeight, onRowClick } = this.props;
     return (
       <div
-        className={clsx(classes.tableCell, classes.flexContainer, {
-          [classes.noClick]: onRowClick == null,
+        className={clsx(styles.tableCell, styles.flexContainer, {
+          [styles.noClick]: onRowClick == null,
         })}
         variant="body"
         style={{ height: rowHeight }}
@@ -76,11 +75,11 @@ class VirtualizedTable extends React.PureComponent {
   };
 
   headerRenderer = ({ label, columnIndex }) => {
-    const { headerHeight, columns, classes } = this.props;
+    const { headerHeight, columns } = this.props;
 
     return (
       <div
-        className={clsx(classes.tableCell, classes.flexContainer, classes.noClick)}
+        className={clsx(styles.tableCell, styles.flexContainer, styles.noClick)}
         variant="head"
         style={{ height: headerHeight }}
         align={columns[columnIndex].numeric || false ? 'right' : 'left'}
@@ -102,17 +101,17 @@ class VirtualizedTable extends React.PureComponent {
       if (newValue[id]) {
         delete newValue[id];
       } else {
-        newValue[id] = true;
+        newValue[id] = id;
       }
 
-      newValue = Object.keys(newValue);
+      newValue = Object.values(newValue);
     }
 
     onRowClick(newValue, rowData, index, event);
   }
 
   render() {
-    const { classes, columns, rowHeight, headerHeight, rows, ...tableProps } = this.props;
+    const { columns, rowHeight, headerHeight, rows, ...tableProps } = this.props;
     return (
       <AutoSizer>
         {({ height, width }) => (
@@ -124,7 +123,7 @@ class VirtualizedTable extends React.PureComponent {
               direction: 'inherit',
             }}
             headerHeight={headerHeight}
-            className={classes.table}
+            className={styles.table}
             rowCount={rows.length}
             rowGetter={({ index }) => rows[index]}
             {...tableProps}
@@ -141,7 +140,7 @@ class VirtualizedTable extends React.PureComponent {
                       columnIndex: index,
                     })
                   }
-                  className={classes.flexContainer}
+                  className={styles.flexContainer}
                   cellRenderer={this.cellRenderer}
                   dataKey={dataKey}
                   flexGrow={flexGrow}
@@ -157,7 +156,6 @@ class VirtualizedTable extends React.PureComponent {
 }
 
 VirtualizedTable.propTypes = {
-  classes: PropTypes.object.isRequired,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       dataKey: PropTypes.string.isRequired,
@@ -170,12 +168,12 @@ VirtualizedTable.propTypes = {
   rowHeight: PropTypes.number,
   rowKey: PropTypes.string,
   multi: PropTypes.bool,
-  selectedItems: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Array)]),
+  selectedItems: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.instanceOf(Array)]),
   onRowClick: PropTypes.func,
   rows: PropTypes.arrayOf(Object)
 };
 
-export default withStyles(styles)(VirtualizedTable);
+export default VirtualizedTable;
 
 
 

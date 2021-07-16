@@ -1,6 +1,6 @@
 import React from 'react';
 import { Components } from 'bng-react-lib';
-import FormLabel from './Common/FormLabel';
+import FormLabel from '../common/FormLabel';
 
 const { VirtualizedTable } = Components;
 
@@ -90,7 +90,7 @@ export default function ReactVirtualizedTable() {
         </div>
 
         <FormLabel label='Value' style={{ width: 400 }}>
-          <textarea style={{ width: '100%', height: '100%' }} value={JSON.stringify(value, undefined, 2)} />
+          <textarea style={{ width: '100%', height: '100%' }} readOnly value={JSON.stringify(value, undefined, 2)} />
         </FormLabel>
       </div>
     </div>
