@@ -10,6 +10,7 @@
 
 .tableRow {
   cursor: pointer;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
 }
 
 .tableRowHover:hover {
@@ -19,7 +20,6 @@
 .tableCell {
   flex: 1;
   padding: 0px 16px;
-  border-bottom: 1px solid rgba(224, 224, 224, 1);
   overflow: hidden;
 }
 
