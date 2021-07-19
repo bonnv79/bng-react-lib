@@ -1,6 +1,5 @@
 import React from 'react';
 import { ContentBoxHeader } from '../ContentBox';
-import { getURL } from '../utils';
 import './styles.css';
 
 export default function Home({
@@ -20,28 +19,32 @@ export default function Home({
   return (
     <div className="wrapper">
       <div id="top">
-        <h2>
-          {title}
-        </h2>
-        <p>
-          {subTitle}
-        </p>
-      </div>
-      <div className="wrapper">
-        <div id="menubar">
-          <ul id="menulist">
+        <div className="title">
+          <h3>
+            {title}
+          </h3>
+          <p>
+            {subTitle}
+          </p>
+        </div>
+
+        <div className="containerMenu">
+          <div className="menu">
             {
               data.map((item, index) => {
                 const { id, label } = item;
                 return (
-                  <li key={id} className={`menuitem ${tab === index ? 'menuitemSelected' : ''}`} onClick={onClickItemTab(index)}>
-                    {label}
-                  </li>
+                  <span key={id} className={`menuItem ${tab === index ? 'menuitemSelected' : ''}`} onClick={onClickItemTab(index)}>
+                    <span className="gg-check" /> {label}
+                  </span>
                 );
               })
             }
-          </ul>
+          </div>
         </div>
+
+      </div>
+      <div className="wrapper">
         <div id="main">
           <ContentBoxHeader
             text={label}
@@ -49,12 +52,11 @@ export default function Home({
             docsLink={docsLink}
           />
 
-          <div style={{ height: 500 }}>
+          <div>
             {component}
           </div>
         </div>
       </div>
-
       {
         version && (
           <div id="bottom">

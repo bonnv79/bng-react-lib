@@ -3,13 +3,7 @@
   display: flex;
   flex-direction: column;
   background-color: #FFF;
-  padding: 0 1rem 1rem 1rem;
-  overflow: auto;
   background: white;
-}
-
-.ContentBox:first-of-type {
-  padding-top: 1rem;
 }
 
 .Header {

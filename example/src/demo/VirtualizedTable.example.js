@@ -71,25 +71,22 @@ export default function VirtualizedTableExample() {
 
   return (
     <div>
-      <div>
-        <FormLabel label='Multi Mode' style={{ width: 400 }}>
-          <input type='checkbox' checked={multi} onChange={handleChangeMulti} />
-        </FormLabel>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <div style={{ height: 'calc(100vh - 150px)', width: '100%' }}>
-          <VirtualizedTable
-            selectedItems={value}
-            rows={rows}
-            columns={columns}
-            onRowClick={onRowClick}
-            multi={multi}
-          />
-        </div>
+      <FormLabel label='Value' style={{ width: 400 }}>
+        {JSON.stringify(value, undefined, 2)}
+      </FormLabel>
 
-        <FormLabel label='Value' style={{ width: 400 }}>
-          <textarea style={{ width: '100%', height: '100%' }} readOnly value={JSON.stringify(value, undefined, 2)} />
-        </FormLabel>
+      <FormLabel label='Multi Mode' style={{ width: 400 }}>
+        <input type='checkbox' checked={multi} onChange={handleChangeMulti} />
+      </FormLabel>
+
+      <div style={{ height: 'calc(100vh - 200px)', width: '100%' }}>
+        <VirtualizedTable
+          selectedItems={value}
+          rows={rows}
+          columns={columns}
+          onRowClick={onRowClick}
+          multi={multi}
+        />
       </div>
     </div>
   );

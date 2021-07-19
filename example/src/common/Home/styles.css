@@ -1,59 +1,101 @@
 .wrapper {
   position: relative;
-  overflow: auto;
 }
 
 #top {
   background-color: #04AA6D;
   color: #ffffff;
-  padding: 15px;
+  padding: 5px 10px;
   border-radius: 4px;
   margin: 4px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-#menubar {
-  width: 200px;
-  float: left
+#top .title {
+  margin-right: 10px;
+}
+
+#top h3, #top p {
+  margin: 0;
+  padding: 0;
+}
+
+#top h3 {
+  font-size: 16px;
+}
+
+#top p {
+  font-size: 12px;
+  display: flex;
+  align-items: flex-end;
+  line-height: 1.6;
+}
+
+.containerMenu {
+  display: flex;
+  flex: 1;
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.menu .menuItem {
+  font-size: 12px;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.menu .menuItem:hover {
+  color: black;
 }
 
 #main {
   padding: 10px;
-  margin-left: 210px;
 }
 
 #bottom {
   font-size: 70%;
   position: fixed;
   margin: 0;
-  bottom: 8px;
-  left: 8px;
+  bottom: 10px;
+  left: 10px;
   border-radius: 4px;
-  margin: 4px;
-}
-
-#top h2, #top p, #menulist {
-  margin: 0;
-  padding: 0;
-}
-
-.menuitem {
-  background-color: #f1f1f1;
-  border: 1px solid #d4d4d4;
-  list-style-type: none;
-  padding: 2px;
-  cursor: pointer;
-  border-radius: 4px;
-  margin: 4px;
-}
-
-.menuitem:hover {
-  background-color: #ffffff;
 }
 
 .menuitemSelected {
  background-color:#04AA6D !important;
- color: white;
+ color: #000000;
  font-weight:bold;
+}
+
+.gg-check {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  transform: scale(var(--ggs,1));
+  width: 22px;
+  height: 22px;
+  border: 2px solid transparent;
+  border-radius: 100px
+}
+.gg-check::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  left: 3px;
+  top: -1px;
+  width: 6px;
+  height: 10px;
+  border-width: 0 2px 2px 0;
+  border-style: solid;
+  transform-origin: bottom left;
+  transform: rotate(45deg)
 }
 
 @media (max-width: 800px) {
@@ -64,10 +106,6 @@
 }
 
 @media (max-width: 600px) {
-  #menubar {
-      width: auto;
-      float: none;
-  }
   #main {
       margin: 0;
   }    

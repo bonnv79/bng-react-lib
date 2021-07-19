@@ -1,5 +1,11 @@
 ## Changelog
 
+##### 1.1.1
+
+- Remove MultiGrid
+- Add new MultiGridTable
+- Modify demo page
+
 ##### 1.1.0
 
 - Update path to access on components
