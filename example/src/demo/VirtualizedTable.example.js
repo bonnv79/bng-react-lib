@@ -1,8 +1,6 @@
 import React from 'react';
-import { Components } from 'bng-react-lib';
+import { VirtualizedTable } from 'bng-react-lib';
 import FormLabel from '../common/FormLabel';
-
-const { VirtualizedTable } = Components;
 
 // Render mockup data
 const sample = [
@@ -58,7 +56,7 @@ const columns = [
   },
 ];
 
-export default function ReactVirtualizedTable() {
+export default function VirtualizedTableExample() {
   const [value, setValue] = React.useState('');
   const [multi, setMulti] = React.useState(false);
 

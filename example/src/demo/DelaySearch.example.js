@@ -2,10 +2,9 @@ import React from 'react';
 import { Utils } from 'bng-react-lib';
 import FormLabel from '../common/FormLabel';
 
-const { makeDelaySearch } = Utils;
-let delaySearch = makeDelaySearch();
+let delaySearch = Utils.makeDelaySearch();
 
-const DelaySearchDemo = () => {
+const DelaySearchExample = () => {
   const [searchKey, setSearchKey] = React.useState('');
   const [searchKey1, setSearchKey1] = React.useState('');
 
@@ -31,4 +30,4 @@ const DelaySearchDemo = () => {
   </div>
 }
 
-export default DelaySearchDemo;
+export default DelaySearchExample;

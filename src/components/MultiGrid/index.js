@@ -87,7 +87,14 @@ class MultiGrid extends React.Component {
       <div key={key} className={styles.cell} style={style}>
         <span
           title={label}
-          className={clsx(styles.nonePointerEvents, { [styles.sortBy]: sort }, { [styles.ascSort]: isSort && ascSort, [styles.descSort]: isSort && !ascSort })}
+          className={clsx(
+            styles.nonePointerEvents,
+            {
+              [styles.sortBy]: sort,
+              [styles.ascSort]: isSort && ascSort,
+              [styles.descSort]: isSort && !ascSort
+            }
+          )}
           onClick={this.changeSort(dataKey)}
         >
           {label}
@@ -198,3 +205,4 @@ MultiGrid.propTypes = {
 };
 
 export default MultiGrid;
+export { MultiGrid };

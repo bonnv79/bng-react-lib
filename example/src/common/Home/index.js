@@ -1,4 +1,6 @@
 import React from 'react';
+import { ContentBoxHeader } from '../ContentBox';
+import { getURL } from '../utils';
 import './styles.css';
 
 export default function Home({
@@ -13,7 +15,7 @@ export default function Home({
     setTab(value);
   };
 
-  const { component, label } = data[tab] || {};
+  const { component, label, sourceLink, docsLink } = data[tab] || {};
 
   return (
     <div className="wrapper">
@@ -41,7 +43,11 @@ export default function Home({
           </ul>
         </div>
         <div id="main">
-          <h1 style={{ marginTop: 0, marginBottom: 16 }}>{label}</h1>
+          <ContentBoxHeader
+            text={label}
+            sourceLink={sourceLink}
+            docsLink={docsLink}
+          />
 
           <div style={{ height: 500 }}>
             {component}

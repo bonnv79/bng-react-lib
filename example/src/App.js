@@ -1,25 +1,30 @@
 import React from 'react';
 import Home from './common/Home';
-import DelaySearchDemo from './demo/DelaySearchDemo';
-import VirtualizedTableDemo from './demo/VirtualizedTableDemo';
-import MultiGridDemo from './demo/MultiGridDemo';
+import DelaySearch from './demo/DelaySearch.example';
+import VirtualizedTable from './demo/VirtualizedTable.example';
+import MultiGrid from './demo/MultiGrid.example';
 import 'bng-react-lib/dist/index.css';
+import { getURL } from './common/utils';
 
 const data = [
   {
-    id: 'MultiGridDemo',
+    id: 'MultiGrid',
     label: 'Multi Grid',
-    component: <MultiGridDemo />
+    component: <MultiGrid />,
+    sourceLink: getURL('MultiGrid.example.js'),
+    docsLink: ''
   },
   {
-    id: 'DelaySearchDemo',
+    id: 'DelaySearch',
     label: 'Delay Search',
-    component: <DelaySearchDemo />
+    component: <DelaySearch />,
+    sourceLink: getURL('DelaySearch.example.js'),
   },
   {
-    id: 'VirtualizedTableDemo',
+    id: 'VirtualizedTable',
     label: 'Virtualized Table',
-    component: <VirtualizedTableDemo />
+    component: <VirtualizedTable />,
+    sourceLink: getURL('VirtualizedTable.example.js'),
   },
 ];
 

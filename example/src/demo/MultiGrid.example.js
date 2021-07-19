@@ -1,12 +1,10 @@
 import React from 'react';
-import { Components } from 'bng-react-lib';
+import { MultiGrid } from 'bng-react-lib';
 import {
   ContentBox,
 } from '../common/ContentBox';
 import { LabeledInput, InputRow } from '../common/LabeledInput';
 import FormLabel from '../common/FormLabel';
-
-const { MultiGrid } = Components;
 
 // Render mockup data
 const sample = [

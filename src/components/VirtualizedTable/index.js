@@ -174,6 +174,7 @@ VirtualizedTable.propTypes = {
 };
 
 export default VirtualizedTable;
+export { VirtualizedTable };
 
 
 

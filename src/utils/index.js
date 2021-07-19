@@ -1,1 +1,1 @@
-export { default as makeDelaySearch } from './makeDelaySearch';
+export { makeDelaySearch } from './makeDelaySearch';

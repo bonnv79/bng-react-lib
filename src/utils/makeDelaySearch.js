@@ -13,3 +13,4 @@ const makeDelaySearch = (delay = 200) => {
 };
 
 export default makeDelaySearch;
+export { makeDelaySearch };
