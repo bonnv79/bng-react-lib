@@ -1,9 +1,14 @@
 ## Changelog
 
+##### 1.1.2
+
+- Format code MultiGridTable
+- Add version link in demo page
+- Change onRowClick(newValue, rowData, index, dataKey) into onRowClick(newValue, rowData, index, dataKey, `event`) in MultiGridTable
+
 ##### 1.1.1
 
-- Remove MultiGrid
-- Add new MultiGridTable
+- Rename MultiGrid into MultiGridTable
 - Modify demo page
 
 ##### 1.1.0

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ContentBoxHeader } from '../ContentBox';
+import { getRootUrl } from '../utils';
 import './styles.css';
 
 export default function Home({
@@ -60,7 +61,9 @@ export default function Home({
       {
         version && (
           <div id="bottom">
-            {`v.${version}`}
+            <a href={getRootUrl('blob/master/CHANGELOG.md')}>
+              {`v.${version}`}
+            </a>
           </div>
         )
       }

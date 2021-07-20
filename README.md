@@ -17,7 +17,7 @@ npm install --save bng-react-lib
 
 ```jsx
 import 'bng-react-lib/dist/index.css';
-import { Utils, MultiGrid, VirtualizedTable } from 'bng-react-lib';
+import { Utils, MultiGridTable, VirtualizedTable } from 'bng-react-lib';
 
 // Utils
 const { makeDelaySearch } = Utils;
