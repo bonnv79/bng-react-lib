@@ -1,6 +1,6 @@
 export const STYLE = {
   border: '1px solid #ddd',
-  userSelect: 'none'
+  userSelect: 'none',
 };
 
 export const STYLE_BOTTOM_LEFT_GRID = {
@@ -17,6 +17,10 @@ export const STYLE_TOP_LEFT_GRID = {
 export const STYLE_TOP_RIGHT_GRID = {
   borderBottom: '2px solid #aaa',
   fontWeight: 'bold',
+};
+
+export const STYLE_BOTTOM_RIGHT_GRID = {
+  outline: 'none',
 };
 
 export const SORT_DIRECTIONS = {

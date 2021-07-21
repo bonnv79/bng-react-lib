@@ -1,5 +1,11 @@
 ## Changelog
 
+##### 1.2.0
+
+- Add sorter, sortBy, sortDirection for MultiGridTable
+- Add onMouseLeave for MultiGridTable cell
+- Add outline: none; for cell, cell > span and styleBottomRightGrid of MultiGridTable
+
 ##### 1.1.2
 
 - Format code MultiGridTable

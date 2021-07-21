@@ -20,8 +20,8 @@ class VirtualizedTable extends React.PureComponent {
   }
 
   static defaultProps = {
-    headerHeight: 30,
-    rowHeight: 30,
+    headerHeight: 35,
+    rowHeight: 35,
     rowKey: 'id',
     multi: false,
     selectedItems: '',

@@ -1,12 +1,11 @@
 /** @flow */
 import * as React from 'react';
-import clsx from 'clsx';
 import {
   ContentBox,
 } from '../common/ContentBox';
 import { LabeledInput, InputRow } from '../common/LabeledInput';
 import { MultiGridTable } from 'bng-react-lib';
-import styles from './MultiGridTable.module.css';
+import { Container, FormLabel } from '../common/Form';
 
 const sample = [
   ['Frozen yoghurt', 159, 6.0, 24, 4.0],
@@ -17,7 +16,7 @@ const sample = [
 ];
 
 function createData(id, dessert, calories, fat, carbs, protein) {
-  return { id, dessert, calories, fat, carbs, protein };
+  return { id: `id-${id}`, dessert, calories, fat, carbs, protein };
 }
 
 const getRows = count => {
@@ -31,51 +30,62 @@ const getRows = count => {
   return rows;
 };
 
-const getColumns = count => {
-  const columns = [
-    {
-      width: 50,
-      label: 'Id',
-      dataKey: 'id',
-      sort: true,
-      align: 'center', // left-right-center default left
-    },
-    {
-      width: 300,
-      label: 'Dessert',
-      dataKey: 'dessert',
-      sort: true,
-      align: 'left',
-    },
-    {
-      width: 120,
-      label: 'Calories\u00A0(g)',
-      dataKey: 'calories',
-      sort: true,
-      align: 'right',
-    },
-    {
-      width: 120,
-      label: 'Fat\u00A0(g)',
-      dataKey: 'fat',
-      sort: true,
-      align: 'right',
-    },
-    {
-      width: 120,
-      label: 'Carbs\u00A0(g)',
-      dataKey: 'carbs',
-      sort: true,
-      align: 'right',
-    },
-    {
-      width: 120,
-      label: 'Protein\u00A0(g)',
-      dataKey: 'protein',
-      sort: false,
-      align: 'right',
-    },
-  ];
+const initColumns = [
+  {
+    width: 50,
+    label: '#',
+    dataKey: 'index',
+    align: 'center', // left-right-center default left
+    render: (value, rowData, rowIndex) => rowIndex + 1,
+  },
+  {
+    width: 50,
+    label: 'Id',
+    dataKey: 'id',
+    sort: true,
+    align: 'left',
+  },
+  {
+    width: 300,
+    label: 'Dessert',
+    dataKey: 'dessert',
+    sort: true,
+    align: 'left',
+  },
+  {
+    width: 120,
+    label: 'Calories\u00A0(g)',
+    dataKey: 'calories',
+    sort: true,
+    align: 'right',
+  },
+  {
+    width: 120,
+    label: 'Fat\u00A0(g)',
+    dataKey: 'fat',
+    sort: true,
+    align: 'right',
+  },
+  {
+    width: 120,
+    label: 'Carbs\u00A0(g)',
+    dataKey: 'carbs',
+    sort: true,
+    align: 'right',
+  },
+  {
+    width: 120,
+    label: 'Protein\u00A0(g)',
+    dataKey: 'protein',
+    sort: false,
+    align: 'right',
+  },
+];
+
+const getColumns = (count = 0) => {
+  const columns = [];
+
+  initColumns.forEach(item => columns.push(item));
 
   for (let i = 0; i < count; i += 1) {
     columns.push({
@@ -90,25 +100,6 @@ const getColumns = count => {
   return columns;
 };
 
-const Container = ({ style, children, inline }) => {
-  const className = { [styles.containerInline]: inline };
-  return (
-    <div style={style} className={clsx(styles.container, className)}>
-      {children}
-    </div>
-  );
-};
-
-const FormLabel = ({ style, label, children, inline }) => {
-  const className = { [styles.formInline]: inline };
-  return (
-    <div className={clsx(styles.form, className)} style={style}>
-      <div className={styles.label}>{label}</div>
-      <div className={styles.content}>{children}</div>
-    </div>
-  );
-};
-
 export default class MultiGridTableExample extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -119,16 +110,19 @@ export default class MultiGridTableExample extends React.PureComponent {
       scrollToColumn: 0,
       scrollToRow: 0,
       value: {
-        value: '',
-        rowData: {},
-        index: '',
-        dataKey: '',
+        value: 'id-1', // set default value
       },
       rowCount: 100,
       columnCount: 0,
       rows: getRows(100),
-      columns: getColumns(0),
+      columns: getColumns(),
       multiple: false,
+      sortBy: {
+        sortBy: 'id', // set default sortBy
+        sortDirection: 'asc',
+      },
+      scroll: {},
+      autoSort: true,
     };
 
     this._onScrollToColumnChange = this._createEventHandler('scrollToColumn');
@@ -140,11 +134,9 @@ export default class MultiGridTableExample extends React.PureComponent {
   _createEventHandler(property, func) {
     return event => {
       let value = parseInt(event.target.value, 10) || 0;
-
       if (func) {
         value = func(value);
       }
-
       this.setState({
         [property]: value,
       });
@@ -153,7 +145,6 @@ export default class MultiGridTableExample extends React.PureComponent {
 
   _createLabeledInput(property, eventHandler) {
     const value = this.state[property];
-
     return (
       <LabeledInput
         label={property}
@@ -164,16 +155,20 @@ export default class MultiGridTableExample extends React.PureComponent {
     );
   }
 
-  _onRowClick = (value, rowData, rowIndex, columnKey) => {
-    this.setState({
-      value: {
-        value,
-        rowData,
-        index: rowIndex,
-        dataKey: columnKey,
-      },
-    });
-  };
+  _createLabeledCheckBox(property, eventHandler) {
+    const value = this.state[property];
+    return (
+      <LabeledInput
+        className=""
+        label={property}
+        name={property}
+        onChange={eventHandler}
+        value={value}
+        type="checkbox"
+        checked={value}
+      />
+    );
+  }
 
   _getRows = rowCount => {
     const rows = getRows(rowCount);
@@ -201,6 +196,9 @@ export default class MultiGridTableExample extends React.PureComponent {
       rowCount,
       columnCount,
       multiple,
+      sortBy,
+      scroll,
+      autoSort,
     } = this.state;
     let { rows, columns } = this.state;
 
@@ -208,28 +206,24 @@ export default class MultiGridTableExample extends React.PureComponent {
       rows = this._getRows(rowCount);
     }
 
-    if (columns.length !== columnCount + 6) {
+    if (columns.length !== columnCount + initColumns.length) {
       columns = this._getColumns(columnCount);
     }
-
-    const checkFixedColumnCount = val => {
-      return val > columns.length - 1 ? columns.length - 1 : val;
-    };
-
-    const checkFixedRowCount = val => {
-      return val > rows.length - 1 ? rows.length - 1 : val;
-    };
 
     return (
       <ContentBox>
         <InputRow>
           {this._createLabeledInput(
             'fixedColumnCount',
-            this._createEventHandler('fixedColumnCount', checkFixedColumnCount),
+            this._createEventHandler('fixedColumnCount', val => {
+              return val > columns.length - 1 ? columns.length - 1 : val;
+            }),
           )}
           {this._createLabeledInput(
             'fixedRowCount',
-            this._createEventHandler('fixedRowCount', checkFixedRowCount),
+            this._createEventHandler('fixedRowCount', val => {
+              return val > rows.length - 1 ? rows.length - 1 : val;
+            }),
           )}
           {this._createLabeledInput(
             'scrollToColumn',
@@ -241,44 +235,90 @@ export default class MultiGridTableExample extends React.PureComponent {
             'columnCount',
             this._onScrollColumnCountChange,
           )}
+          {this._createLabeledCheckBox('multiple', event => {
+            this.setState({ multiple: event.target.checked });
+          })}
+          {this._createLabeledCheckBox('autoSort', event => {
+            this.setState({ autoSort: event.target.checked });
+          })}
         </InputRow>
 
         <Container style={{ marginTop: 5 }}>
-          <FormLabel label="value:" inline>
-            <code>{JSON.stringify(value.value)}</code>
-          </FormLabel>
+          <Container inline>
+            <FormLabel label="value:" inline>
+              <code>{JSON.stringify(value.value, undefined, 2)}</code>
+            </FormLabel>
+            <FormLabel label="index:" inline>
+              {value.index}
+            </FormLabel>
+            <FormLabel label="dataKey:" inline>
+              {value.dataKey}
+            </FormLabel>
+          </Container>
           <FormLabel label="rowData:" inline>
-            <code>{JSON.stringify(value.rowData)}</code>
+            <code>{JSON.stringify(value.rowData, undefined, 2)}</code>
           </FormLabel>
-          <FormLabel label="index:" inline>
-            {value.index}
+          <FormLabel label="sortBy:" inline>
+            <code>{JSON.stringify(sortBy, undefined, 2)}</code>
           </FormLabel>
-          <FormLabel label="rowData:" inline>
-            {value.dataKey}
-          </FormLabel>
-          <FormLabel label="multiple mode:" inline>
-            <input
-              aria-label="multiple"
-              type="checkbox"
-              checked={multiple}
-              onChange={event =>
-                this.setState({ multiple: event.target.checked })
-              }
-            />
+          <FormLabel label="scroll:" inline>
+            <code>{JSON.stringify(scroll, undefined, 2)}</code>
           </FormLabel>
         </Container>
 
         <div style={{ width: '100%', height: 360 }}>
           <MultiGridTable
-            rows={rows}
-            columns={columns}
             fixedColumnCount={fixedColumnCount}
             fixedRowCount={fixedRowCount}
             scrollToColumn={scrollToColumn}
             scrollToRow={scrollToRow}
-            onRowClick={this._onRowClick}
+            rows={rows}
+            columns={columns}
             value={value.value}
             multiple={multiple}
+            classNameCell={(id, rowData, rowIndex) => {
+              return `row-cell-${rowIndex}`;
+            }}
+            onRowClick={(value, rowData, rowIndex, columnKey, event) => {
+              this.setState({
+                value: {
+                  value,
+                  rowData,
+                  index: rowIndex,
+                  dataKey: columnKey,
+                },
+              });
+            }}
+            onHeaderRowClick={({ sortBy, sortDirection }) => {
+              this.setState({
+                sortBy: {
+                  sortBy,
+                  sortDirection,
+                },
+              });
+            }}
+            onScroll={({
+              clientHeight,
+              clientWidth,
+              scrollHeight,
+              scrollLeft,
+              scrollTop,
+              scrollWidth,
+            }) => {
+              this.setState({
+                scroll: {
+                  clientHeight,
+                  clientWidth,
+                  scrollHeight,
+                  scrollLeft,
+                  scrollTop,
+                  scrollWidth,
+                },
+              });
+            }}
+            sorter={autoSort ? undefined : false}
+            sortBy={sortBy.sortBy}
+            sortDirection={sortBy.sortDirection}
           />
         </div>
       </ContentBox>
