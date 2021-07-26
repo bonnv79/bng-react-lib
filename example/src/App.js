@@ -3,10 +3,18 @@ import Home from './common/Home';
 import DelaySearch from './demo/DelaySearch.example';
 import VirtualizedTable from './demo/VirtualizedTable.example';
 import MultiGridTable from './demo/MultiGridTable.example';
+import ReactSortableTree from './demo/ReactSortableTree.example';
 import 'bng-react-lib/dist/index.css';
 import { getURL } from './common/utils';
 
 const data = [
+  {
+    id: 'ReactSortableTree',
+    label: 'React Sortable Tree',
+    component: <ReactSortableTree />,
+    sourceLink: getURL('ReactSortableTree.example.js'),
+    docsLink: ''
+  },
   {
     id: 'MultiGridTable',
     label: 'Multi Grid Table',
@@ -29,7 +37,7 @@ const data = [
 ];
 
 const App = () => {
-  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version="1.2.0" />;
+  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version="1.3.0" />;
 }
 
 export default App

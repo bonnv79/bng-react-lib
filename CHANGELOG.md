@@ -1,5 +1,9 @@
 ## Changelog
 
+##### 1.3.0
+
+- Add new ReactSortableTree component
+
 ##### 1.2.0
 
 - Add sorter, sortBy, sortDirection for MultiGridTable
