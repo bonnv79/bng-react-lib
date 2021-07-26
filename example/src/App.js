@@ -37,7 +37,7 @@ const data = [
 ];
 
 const App = () => {
-  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version="1.3.0" />;
+  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version="1.3.1" />;
 }
 
 export default App

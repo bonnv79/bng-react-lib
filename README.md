@@ -17,12 +17,28 @@ npm install --save bng-react-lib
 
 ```jsx
 import 'bng-react-lib/dist/index.css';
-import { Utils, MultiGridTable, VirtualizedTable, ReactSortableTree } from 'bng-react-lib';
+import { 
+  Utils, 
+  MultiGridTable, 
+  VirtualizedTable, 
+  ReactSortableTree
+} from 'bng-react-lib';
 
 // Utils
 const { makeDelaySearch } = Utils;
 
 ```
+
+### Dependencies
+
+*** Extend from [react-virtualized](https://github.com/bvaughn/react-virtualized)
+
+- MultiGridTable
+- VirtualizedTable
+
+*** Extend from [react-sortable-tree](https://github.com/frontend-collective/react-sortable-tree)
+
+- ReactSortableTree
 
 ## License
 
