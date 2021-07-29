@@ -2,6 +2,7 @@
 
 ##### 1.4.0
 
+- Add new VirtualizedSelect component
 - Add shift multiple mode for MultiGridTable
 
 ##### 1.3.1

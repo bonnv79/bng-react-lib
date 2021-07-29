@@ -4,10 +4,18 @@ import DelaySearch from './demo/DelaySearch.example';
 import VirtualizedTable from './demo/VirtualizedTable.example';
 import MultiGridTable from './demo/MultiGridTable.example';
 import ReactSortableTree from './demo/ReactSortableTree.example';
+import VirtualizedSelect from './demo/VirtualizedSelect.example';
 import 'bng-react-lib/dist/index.css';
 import { getURL } from './common/utils';
 
 const data = [
+  {
+    id: 'VirtualizedSelect',
+    label: 'Virtualized Select',
+    component: <VirtualizedSelect />,
+    sourceLink: getURL('VirtualizedSelect.example.js'),
+    docsLink: ''
+  },
   {
     id: 'ReactSortableTree',
     label: 'React Sortable Tree',
