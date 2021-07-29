@@ -6,6 +6,7 @@ import {
 import { LabeledInput, InputRow } from '../common/LabeledInput';
 import { MultiGridTable } from 'bng-react-lib';
 import { Container, FormLabel } from '../common/Form';
+import styles from './MultiGridTable.module.css';
 
 const sample = [
   ['Frozen yoghurt', 159, 6.0, 24, 4.0],
@@ -103,7 +104,8 @@ const getColumns = (count = 0) => {
 export default class MultiGridTableExample extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
-
+    const defaultRowCount = 99;
+    const defaultColumnCount = 0;
     this.state = {
       fixedColumnCount: 0,
       fixedRowCount: 0,
@@ -112,11 +114,12 @@ export default class MultiGridTableExample extends React.PureComponent {
       value: {
         value: 'id-1', // set default value
       },
-      rowCount: 100,
-      columnCount: 0,
-      rows: getRows(100),
-      columns: getColumns(),
+      rowCount: defaultRowCount,
+      columnCount: defaultColumnCount,
+      rows: getRows(defaultRowCount),
+      columns: getColumns(defaultColumnCount),
       multiple: false,
+      multipleShiftMode: false,
       sortBy: {
         sortBy: 'id', // set default sortBy
         sortDirection: 'asc',
@@ -127,8 +130,6 @@ export default class MultiGridTableExample extends React.PureComponent {
 
     this._onScrollToColumnChange = this._createEventHandler('scrollToColumn');
     this._onScrollToRowChange = this._createEventHandler('scrollToRow');
-    this._onScrollRowCountChange = this._createEventHandler('rowCount');
-    this._onScrollColumnCountChange = this._createEventHandler('columnCount');
   }
 
   _createEventHandler(property, func) {
@@ -143,6 +144,34 @@ export default class MultiGridTableExample extends React.PureComponent {
     };
   }
 
+  _onScrollRowCountChange = event => {
+    const { rows } = this.state;
+    const rowCount = parseInt(event.target.value, 10) || 0;
+    const newState = {
+      rowCount,
+    };
+
+    if (rows.length !== rowCount) {
+      newState.rows = getRows(rowCount);
+    }
+
+    this.setState(newState);
+  };
+
+  _onScrollColumnCountChange = event => {
+    const { columns } = this.state;
+    const columnCount = parseInt(event.target.value, 10) || 0;
+    const newState = {
+      columnCount,
+    };
+
+    if (columns.length !== columnCount + initColumns.length) {
+      newState.columns = getColumns(columnCount);
+    }
+
+    this.setState(newState);
+  };
+
   _createLabeledInput(property, eventHandler) {
     const value = this.state[property];
     return (
@@ -155,7 +184,7 @@ export default class MultiGridTableExample extends React.PureComponent {
     );
   }
 
-  _createLabeledCheckBox(property, eventHandler) {
+  _createLabeledCheckBox(property, eventHandler, disabled) {
     const value = this.state[property];
     return (
       <LabeledInput
@@ -166,25 +195,10 @@ export default class MultiGridTableExample extends React.PureComponent {
         value={value}
         type="checkbox"
         checked={value}
+        disabled={disabled}
       />
     );
   }
-
-  _getRows = rowCount => {
-    const rows = getRows(rowCount);
-    this.setState({
-      rows,
-    });
-    return rows;
-  };
-
-  _getColumns = columnCount => {
-    const columns = getColumns(columnCount);
-    this.setState({
-      columns,
-    });
-    return columns;
-  };
 
   render() {
     const {
@@ -193,21 +207,17 @@ export default class MultiGridTableExample extends React.PureComponent {
       scrollToColumn,
       scrollToRow,
       value,
-      rowCount,
-      columnCount,
       multiple,
       sortBy,
       scroll,
       autoSort,
+      multipleShiftMode,
     } = this.state;
-    let { rows, columns } = this.state;
+    const { rows, columns } = this.state;
+    let currentMultiple = multiple;
 
-    if (rows.length !== rowCount) {
-      rows = this._getRows(rowCount);
-    }
-
-    if (columns.length !== columnCount + initColumns.length) {
-      columns = this._getColumns(columnCount);
+    if (currentMultiple && multipleShiftMode) {
+      currentMultiple = 'shift';
     }
 
     return (
@@ -235,25 +245,42 @@ export default class MultiGridTableExample extends React.PureComponent {
             'columnCount',
             this._onScrollColumnCountChange,
           )}
-          {this._createLabeledCheckBox('multiple', event => {
-            this.setState({ multiple: event.target.checked });
-          })}
           {this._createLabeledCheckBox('autoSort', event => {
             this.setState({ autoSort: event.target.checked });
           })}
+          {this._createLabeledCheckBox('multiple', event => {
+            this.setState({ multiple: event.target.checked });
+          })}
+          {this._createLabeledCheckBox(
+            'multipleShiftMode',
+            event => {
+              this.setState({ multipleShiftMode: event.target.checked });
+            },
+            !multiple,
+          )}
         </InputRow>
 
         <Container style={{ marginTop: 5 }}>
-          <Container inline>
-            <FormLabel label="value:" inline>
+          <FormLabel
+            label="value:"
+            inline
+            contentClassName={styles.textEllipsis}>
+            <div className={styles.textEllipsis}>
               <code>{JSON.stringify(value.value, undefined, 2)}</code>
-            </FormLabel>
+            </div>
+          </FormLabel>
+          <Container inline>
             <FormLabel label="index:" inline>
               {value.index}
             </FormLabel>
             <FormLabel label="dataKey:" inline>
               {value.dataKey}
             </FormLabel>
+            {Array.isArray(value.value) && (
+              <FormLabel label="selected items:" inline>
+                {value.value.length}
+              </FormLabel>
+            )}
           </Container>
           <FormLabel label="rowData:" inline>
             <code>{JSON.stringify(value.rowData, undefined, 2)}</code>
@@ -275,7 +302,7 @@ export default class MultiGridTableExample extends React.PureComponent {
             rows={rows}
             columns={columns}
             value={value.value}
-            multiple={multiple}
+            multiple={currentMultiple}
             classNameCell={(id, rowData, rowIndex) => {
               return `row-cell-${rowIndex}`;
             }}

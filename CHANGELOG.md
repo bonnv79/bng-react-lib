@@ -1,5 +1,9 @@
 ## Changelog
 
+##### 1.4.0
+
+- Add shift multiple mode for MultiGridTable
+
 ##### 1.3.1
 
 - Add Dependencies into README.md
