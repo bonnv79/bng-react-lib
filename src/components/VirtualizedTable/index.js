@@ -2,17 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { AutoSizer, Column, Table } from 'react-virtualized';
+import keyBy from 'lodash/keyBy';
 import styles from './styles.module.css';
-
-const keyBy = (array) => {
-  const objects = {};
-  if (Array.isArray(array)) {
-    array.forEach(key => {
-      objects[key] = key;
-    });
-  }
-  return objects;
-};
 
 class VirtualizedTable extends React.PureComponent {
   state = {
