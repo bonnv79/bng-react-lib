@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContentBoxHeader } from '../ContentBox';
-import { getRootUrl } from '../utils';
+import { getDemoURL, getRootUrl } from '../utils';
 import './styles.css';
 import {
   BrowserRouter as Router,
@@ -34,7 +34,7 @@ export default function Home({
             <div className="menu">
               {
                 data.map(({ id, label }) => (
-                  <NavLink key={id} exact to={`/${id}`} className="menuItem" activeClassName="menuitemSelected">
+                  <NavLink key={id} exact to={getDemoURL(id)} className="menuItem" activeClassName="menuitemSelected">
                     <span className="gg-check" /> {label}
                   </NavLink>
                 ))
@@ -47,11 +47,14 @@ export default function Home({
           <div id="main">
             <Switch>
               <Route exact path="/">
-                <Redirect to={`/${defaultData.id}`} />
+                <Redirect to={getDemoURL(defaultData.id)} />
+              </Route>
+              <Route exact path={getDemoURL()}>
+                <Redirect to={getDemoURL(defaultData.id)} />
               </Route>
               {
                 data.map(({ id, component, label, sourceLink, docsLink }) => (
-                  <Route key={id} exact path={`/${id}`}>
+                  <Route key={id} exact path={getDemoURL(id)}>
                     <React.Fragment>
                       <ContentBoxHeader
                         text={label}
