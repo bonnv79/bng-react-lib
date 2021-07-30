@@ -18,14 +18,24 @@ npm install --save bng-react-lib
 ```jsx
 import 'bng-react-lib/dist/index.css';
 import { 
-  Utils, 
-  MultiGridTable, 
+  Utils,
   VirtualizedTable, 
-  ReactSortableTree
+  MultiGridTable,
+  ReactSortableTree,
+  VirtualizedSelect
 } from 'bng-react-lib';
 
 // Utils
-const { makeDelaySearch } = Utils;
+const { 
+  // makeDelaySearch
+  makeDelaySearch,
+  // search
+  search,
+  // numberFormat
+  LOCALES,
+  makeNumberFormat,
+  numberDecimal
+} = Utils;
 
 ```
 

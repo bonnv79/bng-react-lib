@@ -1,5 +1,10 @@
 ## Changelog
 
+##### 1.5.0
+
+- Add react-router-dom to demo page
+- Add NumberFormat on utils
+
 ##### 1.4.0
 
 - Add new VirtualizedSelect component

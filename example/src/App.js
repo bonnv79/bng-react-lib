@@ -1,6 +1,7 @@
 import React from 'react';
 import Home from './common/Home';
 import DelaySearch from './demo/DelaySearch.example';
+import NumberFormat from './demo/NumberFormat.example';
 import VirtualizedTable from './demo/VirtualizedTable.example';
 import MultiGridTable from './demo/MultiGridTable.example';
 import ReactSortableTree from './demo/ReactSortableTree.example';
@@ -42,10 +43,16 @@ const data = [
     component: <DelaySearch />,
     sourceLink: getURL('DelaySearch.example.js'),
   },
+  {
+    id: 'NumberFormat',
+    label: 'Number Format',
+    component: <NumberFormat />,
+    sourceLink: getURL('NumberFormat.example.js'),
+  },
 ];
 
 const App = () => {
-  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version="1.4.0" />;
+  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version="1.5.0" />;
 }
 
 export default App

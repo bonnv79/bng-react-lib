@@ -1,2 +1,3 @@
-export { makeDelaySearch } from './makeDelaySearch';
-export { search } from './search';
+export * from './makeDelaySearch';
+export * from './search';
+export * from './numberFormat';

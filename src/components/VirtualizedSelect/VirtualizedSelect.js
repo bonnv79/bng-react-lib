@@ -25,11 +25,6 @@ class VirtualizedSelect extends React.Component {
       originalValue: value,
       objectValue: isMulti ? _keyBy(value, valueKey) : null,
     };
-
-    this._renderMenu = this._renderMenu.bind(this);
-    this._optionRenderer = this._optionRenderer.bind(this);
-    this._setListRef = this._setListRef.bind(this);
-    this._setSelectRef = this._setSelectRef.bind(this);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -40,6 +35,12 @@ class VirtualizedSelect extends React.Component {
       };
     }
     return null;
+  }
+
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return;
+    };
   }
 
   onInputChange = value => {
@@ -58,7 +59,7 @@ class VirtualizedSelect extends React.Component {
     return clsx(className, classes[className]);
   };
 
-  _renderMenu(props) {
+  _renderMenu = (props) => {
     const { selectOption, maxHeight, isMulti } = props;
     const {
       listProps,
@@ -134,7 +135,7 @@ class VirtualizedSelect extends React.Component {
     );
   }
 
-  _getOptionHeight({ option, index }) {
+  _getOptionHeight = ({ option, index }) => {
     let { optionHeight } = this.props;
     if (optionHeight instanceof Function) {
       optionHeight = optionHeight({ option, index });
@@ -147,7 +148,7 @@ class VirtualizedSelect extends React.Component {
    * @param {key, style, index, option, selectOption, valueKey, labelKey, value, selected} param
    * @returns
    */
-  _optionRenderer({ key, style, option, selectOption, labelKey, selected }) {
+  _optionRenderer = ({ key, style, option, selectOption, labelKey, selected }) => {
     const className = [this.getClassName('VirtualizedSelect__Option')];
     let events = {};
     const label = option[labelKey];
@@ -182,15 +183,15 @@ class VirtualizedSelect extends React.Component {
     );
   }
 
-  _setListRef(ref) {
+  _setListRef = (ref) => {
     this._listRef = ref;
   }
 
-  _setSelectRef(ref) {
+  _setSelectRef = (ref) => {
     this._selectRef = ref;
   }
 
-  _getStyles() {
+  _getStyles = () => {
     const { styles, isSearchable } = this.props;
     return {
       singleValue: (provided, state) => {
