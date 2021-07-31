@@ -6,10 +6,18 @@ import VirtualizedTable from './demo/VirtualizedTable.example';
 import MultiGridTable from './demo/MultiGridTable.example';
 import ReactSortableTree from './demo/ReactSortableTree.example';
 import VirtualizedSelect from './demo/VirtualizedSelect.example';
+import EllipsisTooltip from './demo/EllipsisTooltip.example';
 import 'bng-react-lib/dist/index.css';
 import { getURL } from './common/utils';
 
 const data = [
+  {
+    id: 'EllipsisTooltip',
+    label: 'Ellipsis Tooltip',
+    component: <EllipsisTooltip />,
+    sourceLink: getURL('EllipsisTooltip.example.js'),
+    docsLink: ''
+  },
   {
     id: 'VirtualizedSelect',
     label: 'Virtualized Select',
@@ -52,7 +60,7 @@ const data = [
 ];
 
 const App = () => {
-  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version="1.5.0" />;
+  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version="1.5.1" />;
 }
 
 export default App

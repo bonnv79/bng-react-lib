@@ -20,3 +20,9 @@ export const FormLabel = ({ style, label, children, inline }) => {
     </div>
   );
 };
+
+export const Title = ({ className, children, ...props }) => {
+  return (
+    <div className={clsx(styles.title, className)} {...props}>{children}</div>
+  );
+};

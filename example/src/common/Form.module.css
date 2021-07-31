@@ -41,3 +41,8 @@
 .formInline > .label {
   margin-bottom: 0;
 }
+
+.title {
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}

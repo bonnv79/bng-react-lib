@@ -22,7 +22,8 @@ import {
   VirtualizedTable, 
   MultiGridTable,
   ReactSortableTree,
-  VirtualizedSelect
+  VirtualizedSelect,
+  EllipsisTooltip
 } from 'bng-react-lib';
 
 // Utils

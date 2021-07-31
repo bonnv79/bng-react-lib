@@ -1,5 +1,11 @@
 ## Changelog
 
+##### 1.5.1
+
+- Fix route path of demo page
+- Modify Router for demo page
+- Add EllipsisTooltip component
+
 ##### 1.5.0
 
 - Add react-router-dom to demo page
