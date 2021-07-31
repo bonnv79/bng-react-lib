@@ -3,8 +3,7 @@ import { ContentBoxHeader } from '../ContentBox';
 import { getDemoURL, getRootUrl } from '../utils';
 import './styles.css';
 import {
-  BrowserRouter as Router,
-  Switch,
+  HashRouter,
   Route,
   NavLink,
   Redirect,
@@ -18,7 +17,7 @@ export default function Home({
 }) {
   const defaultData = data[0];
   return (
-    <Router>
+    <HashRouter>
       <div className="wrapper">
         <div id="top">
           <div className="title">
@@ -45,32 +44,28 @@ export default function Home({
         </div>
         <div className="wrapper">
           <div id="main">
-            <Switch>
-              <Route exact path="/">
-                <Redirect to={getDemoURL(defaultData.id)} />
-              </Route>
-              <Route exact path={getDemoURL()}>
-                <Redirect to={getDemoURL(defaultData.id)} />
-              </Route>
-              {
-                data.map(({ id, component, label, sourceLink, docsLink }) => (
-                  <Route key={id} exact path={getDemoURL(id)}>
-                    <React.Fragment>
-                      <ContentBoxHeader
-                        text={label}
-                        sourceLink={sourceLink}
-                        docsLink={docsLink}
-                      />
-                      <div>
-                        {component}
-                      </div>
-                    </React.Fragment>
-                  </Route>
-                ))
-              }
-            </Switch>
+            <Route exact path="/">
+              <Redirect to={getDemoURL(defaultData.id)} />
+            </Route>
+            {
+              data.map(({ id, component, label, sourceLink, docsLink }) => (
+                <Route key={id} exact path={getDemoURL(id)}>
+                  <React.Fragment>
+                    <ContentBoxHeader
+                      text={label}
+                      sourceLink={sourceLink}
+                      docsLink={docsLink}
+                    />
+                    <div>
+                      {component}
+                    </div>
+                  </React.Fragment>
+                </Route>
+              ))
+            }
           </div>
         </div>
+
         {
           version && (
             <div id="bottom">
@@ -81,6 +76,6 @@ export default function Home({
           )
         }
       </div>
-    </Router>
+    </HashRouter>
   );
 }

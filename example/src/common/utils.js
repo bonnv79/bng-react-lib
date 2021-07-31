@@ -7,5 +7,5 @@ export function getURL(url) {
 }
 
 export function getDemoURL(id = '') {
-  return `/bng-react-lib/${id}`;
+  return `/${id}`;
 }
