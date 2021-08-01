@@ -1,6 +1,6 @@
 {
   "name": "bng-react-lib",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "bng-react-lib",
   "author": "bonnv79",
   "license": "MIT",
@@ -57,7 +57,7 @@
   "dependencies": {
     "node-sass": "^6.0.1",
     "react-select": "^4.3.1",
-    "react-sortable-tree": "^2.8.0",
+    "react-sortable-tree": "^2.3.0",
     "react-virtualized": "^9.22.3",
     "sass": "^1.35.2"
   }

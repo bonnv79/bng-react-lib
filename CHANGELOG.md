@@ -1,5 +1,9 @@
 ## Changelog
 
+##### 1.5.2
+
+- Change react-sortable-tree version from 2.8.0 to 2.3.0
+
 ##### 1.5.1
 
 - Fix route path of demo page
