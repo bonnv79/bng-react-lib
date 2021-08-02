@@ -21,6 +21,7 @@ const getTreeData = (rowCount) => {
       id: 'item-2',
       title: 'item 2',
       expanded: true,
+      isDirectory: true,
       children: [
         {
           id: 'item-20',
@@ -201,12 +202,13 @@ export default function ReactSortableTreeExample() {
       <div style={{ width: '100%', height: 400 }}>
         <ReactSortableTree
           treeData={treeData}
+          onChange={newTree => setTreeData(newTree)}
+          onClick={val => setValue(val)}
+          value={value.id}
           expanded={expanded}
           searchQuery={searchQuery}
           searchFocusOffset={searchFocusOffset}
           searchFinishCallback={searchFinishCallback}
-          onClick={val => setValue(val)}
-          value={value.id}
           generateNodeProps={generate ? generateNodeProps : undefined}
           maxDepth={maxDepth ? Number(maxDepth) : undefined}
         />

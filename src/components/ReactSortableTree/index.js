@@ -16,39 +16,54 @@ const PlaceholderRendererDefault = () => {
   );
 };
 
+/**
+* 
+* @param {node, path, treeIndex, lowerSiblingCounts, isSearchMatch, isSearchFocus} rowInfo 
+* @returns func or bool
+*/
+const canDrag = ({ node }) => !node.dragDisabled;
+
+/**
+* 
+* @param {node, prevPath, prevParent, prevTreeIndex, nextPath, nextParent, nextTreeIndex} rowInfo 
+* @returns func
+*/
+const canDrop = ({ nextParent }) => (!nextParent || !nextParent.dropDisabled);
+
+/**
+* 
+* @param {treeData, node, nextParentNode, prevPath, prevTreeIndex, path, treeIndex} rowInfo 
+* @returns void
+*/
+const onMoveNode = () => { };
+
+/**
+* 
+* @param {treeData, node, expanded, path} rowInfo 
+* @returns void
+*/
+const onVisibilityToggle = () => { };
+
 class ReactSortableTree extends Component {
-  constructor(props) {
-    super(props);
-    const { treeData } = props;
-    this.state = {
-      originalTreeData: treeData,
-      treeData,
-      expanded: null,
-    };
-
-    this.updateTreeData = this.updateTreeData.bind(this);
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const newState = {};
-    if (props.treeData !== state.originalTreeData) {
-      newState.originalTreeData = props.treeData;
-      newState.treeData = props.treeData;
+  componentDidUpdate(prevProps) {
+    if (this.props.expanded !== prevProps.expanded) {
+      this.updateTreeData(toggleExpandedForAll({
+        treeData: this.props.treeData,
+        expanded: this.props.expanded,
+      }));
     }
-    if (props.expanded !== state.expanded) {
-      newState.treeData = toggleExpandedForAll({
-        treeData: state.treeData,
-        expanded: props.expanded,
-      });
-      newState.expanded = props.expanded;
-    }
-    return newState;
   }
 
-  updateTreeData(treeData) {
-    this.setState({ treeData });
+  updateTreeData = (treeData) => {
+    const { onChange } = this.props;
+    onChange(treeData);
   }
 
+  /**
+   * 
+   * @param {node, path, treeIndex, lowerSiblingCounts, isSearchMatch, isSearchFocus} rowInfo 
+   * @returns void
+   */
   onClickNode = (rowInfo) => {
     const { onClick } = this.props;
     if (typeof onClick === 'function') {
@@ -59,7 +74,7 @@ class ReactSortableTree extends Component {
   /**
    * 
    * @param {node, path, treeIndex, lowerSiblingCounts, isSearchMatch, isSearchFocus} rowInfo 
-   * @returns {}
+   * @returns object
    */
   generateNodeProps = rowInfo => {
     const { value, generateNodeProps } = this.props;
@@ -75,86 +90,73 @@ class ReactSortableTree extends Component {
     };
   }
 
-  /**
-   * 
-   * @param {treeData, node, nextParentNode, prevPath, prevTreeIndex, path, treeIndex} rowInfo 
-   */
-  onMoveNode = (rowInfo) => {
-    const { onMoveNode } = this.props;
-    if (typeof onMoveNode === 'function') {
-      onMoveNode(rowInfo);
-    }
-  }
-
   render() {
     const {
-      searchQuery,
-      searchFocusOffset,
-      searchFinishCallback,
-      maxDepth,
-      rowHeight,
-      scaffoldBlockPxWidth,
-      placeholderRenderer,
-      className,
+      // eslint-disable-next-line no-unused-vars
+      onClick, // remove from props
+      // eslint-disable-next-line no-unused-vars
+      value, // remove from props
+      // eslint-disable-next-line no-unused-vars
+      expanded, // remove from props
+      ...props
     } = this.props;
-    const { treeData } = this.state;
 
     return (
       <SortableTree
-        className={className}
-        theme={FileExplorerTheme}
-        treeData={treeData}
-        rowHeight={rowHeight}
-        maxDepth={maxDepth}
-        scaffoldBlockPxWidth={scaffoldBlockPxWidth}
+        {...props}
         onChange={this.updateTreeData}
-        searchQuery={searchQuery}
-        searchFocusOffset={searchFocusOffset}
-        searchFinishCallback={searchFinishCallback}
-        canDrag={({ node }) => !node.dragDisabled}
-        canDrop={({ nextParent }) => {
-          return !nextParent || !nextParent.dropDisabled;
-        }}
         generateNodeProps={this.generateNodeProps}
-        onMoveNode={this.onMoveNode}
-        placeholderRenderer={placeholderRenderer}
       />
     );
   }
 }
 
 ReactSortableTree.defaultProps = {
-  treeData: [],
+  style: undefined,
+  innerStyle: { outline: 'none' },
+  theme: FileExplorerTheme,
   expanded: null,
   searchQuery: '',
-  searchFocusOffset: 0,
-  searchFinishCallback: undefined,
-  onClick: () => { },
+  searchFocusOffset: undefined,
   value: '',
   maxDepth: undefined,
-  generateNodeProps: null,
   rowHeight: 30,
-  onMoveNode: undefined,
   scaffoldBlockPxWidth: 28,
   placeholderRenderer: PlaceholderRendererDefault,
-  className: undefined
+  className: undefined,
+  treeData: [],
+  onChange: undefined,
+  onClick: undefined,
+  searchFinishCallback: undefined,
+  generateNodeProps: null,
+  onMoveNode,
+  onVisibilityToggle,
+  canDrag,
+  canDrop,
 };
 
 ReactSortableTree.propTypes = {
-  treeData: PropTypes.arrayOf(Object),
+  style: PropTypes.instanceOf(Object),
+  innerStyle: PropTypes.instanceOf(Object),
+  theme: PropTypes.instanceOf(Object),
   expanded: PropTypes.bool,
   searchQuery: PropTypes.string,
   searchFocusOffset: PropTypes.number,
-  searchFinishCallback: PropTypes.func,
-  onClick: PropTypes.func,
   value: PropTypes.string,
   maxDepth: PropTypes.number,
-  generateNodeProps: PropTypes.func,
   rowHeight: PropTypes.number,
-  onMoveNode: PropTypes.func,
   scaffoldBlockPxWidth: PropTypes.number,
   placeholderRenderer: PropTypes.any,
   className: PropTypes.string,
+  treeData: PropTypes.arrayOf(Object),
+  onChange: PropTypes.func,
+  onClick: PropTypes.func,
+  searchFinishCallback: PropTypes.func,
+  generateNodeProps: PropTypes.func,
+  onMoveNode: PropTypes.func,
+  onVisibilityToggle: PropTypes.func,
+  canDrag: PropTypes.func,
+  canDrop: PropTypes.func,
 };
 
 export default ReactSortableTree;
