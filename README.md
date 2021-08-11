@@ -23,7 +23,8 @@ import {
   MultiGridTable,
   ReactSortableTree,
   VirtualizedSelect,
-  EllipsisTooltip
+  EllipsisTooltip,
+  SortableVirtualList
 } from 'bng-react-lib';
 
 // Utils
@@ -50,6 +51,10 @@ const {
 *** Extend from [react-sortable-tree](https://github.com/frontend-collective/react-sortable-tree)
 
 - ReactSortableTree
+
+*** Extend from [react-sortable-hoc](https://github.com/clauderic/react-sortable-hoc)
+
+- SortableVirtualList
 
 ## License
 

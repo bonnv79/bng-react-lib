@@ -1,5 +1,9 @@
 ## Changelog
 
+##### 1.6.0
+
+- Add SortableVirtualList component
+
 ##### 1.5.3
 
 - Format code for ReactSortableTree

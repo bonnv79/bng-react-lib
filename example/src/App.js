@@ -7,10 +7,18 @@ import MultiGridTable from './demo/MultiGridTable.example';
 import ReactSortableTree from './demo/ReactSortableTree.example';
 import VirtualizedSelect from './demo/VirtualizedSelect.example';
 import EllipsisTooltip from './demo/EllipsisTooltip.example';
+import SortableVirtualList from './demo/SortableVirtualList.example';
 import 'bng-react-lib/dist/index.css';
 import { getURL } from './common/utils';
 
 const data = [
+  {
+    id: 'SortableVirtualList',
+    label: 'Sortable VirtualList',
+    component: <SortableVirtualList />,
+    sourceLink: getURL('SortableVirtualList.example.js'),
+    docsLink: ''
+  },
   {
     id: 'EllipsisTooltip',
     label: 'Ellipsis Tooltip',
