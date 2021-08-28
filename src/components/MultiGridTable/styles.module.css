@@ -79,3 +79,54 @@
 .ReactVirtualized__MultiGridTable__DescSort:after {
   opacity: 1 !important;
 }
+
+.ReactVirtualized__MultiGridTable__HeaderResize {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  position: relative;
+}
+
+.ReactVirtualized__MultiGridTable__HeaderResize:hover {
+  border-left: 2px dotted #b3b3b3 !important;
+}
+
+.ReactVirtualized__MultiGridTable__HeaderResize:hover .ReactVirtualized__MultiGridTable__ResizeHandle {
+  opacity: 1;
+}
+
+.ReactVirtualized__MultiGridTable__ResizeHandle {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  display: block;
+  cursor: col-resize;
+  right: 0;
+  box-sizing: border-box;
+  width: 6px;
+  height: 100%;
+  opacity: 0;
+}
+
+.ReactVirtualized__MultiGridTable__ResizeHandle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  height: 40%;
+  border-left: 2px solid #9c9c9c;
+} 
+
+.ReactVirtualized__MultiGridTable__ResizeHandle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  right: 0;
+  height: 55%;
+  border-right: 2px solid #9c9c9c;
+} 
+
+.ReactVirtualized__MultiGridTable__HeaderSortable {
+  cursor: grab;
+}

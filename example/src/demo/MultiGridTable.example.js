@@ -33,14 +33,14 @@ const getRows = count => {
 
 const initColumns = [
   {
-    width: 50,
+    width: 80,
     label: '#',
     dataKey: 'index',
     align: 'center', // left-right-center default left
     render: (value, rowData, rowIndex) => rowIndex + 1,
   },
   {
-    width: 50,
+    width: 80,
     label: 'Id',
     dataKey: 'id',
     sort: true,
@@ -90,11 +90,10 @@ const getColumns = (count = 0) => {
 
   for (let i = 0; i < count; i += 1) {
     columns.push({
-      width: 120,
+      width: 150,
       label: `New column ${i}`,
       dataKey: `new-column-${i}`,
       sort: false,
-      align: 'right',
     });
   }
 
@@ -105,8 +104,10 @@ export default class MultiGridTableExample extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     const defaultRowCount = 99;
-    const defaultColumnCount = 0;
+    const defaultColumnCount = 10;
     this.state = {
+      showConfig: true,
+      showParams: false,
       fixedColumnCount: 0,
       fixedRowCount: 0,
       scrollToColumn: 0,
@@ -126,6 +127,8 @@ export default class MultiGridTableExample extends React.PureComponent {
       },
       scroll: {},
       autoSort: true,
+      sortableColumn: false,
+      resizeColumn: false,
     };
 
     this._onScrollToColumnChange = this._createEventHandler('scrollToColumn');
@@ -202,6 +205,8 @@ export default class MultiGridTableExample extends React.PureComponent {
 
   render() {
     const {
+      showConfig,
+      showParams,
       fixedColumnCount,
       fixedRowCount,
       scrollToColumn,
@@ -212,6 +217,8 @@ export default class MultiGridTableExample extends React.PureComponent {
       scroll,
       autoSort,
       multipleShiftMode,
+      sortableColumn,
+      resizeColumn
     } = this.state;
     const { rows, columns } = this.state;
     let currentMultiple = multiple;
@@ -222,78 +229,100 @@ export default class MultiGridTableExample extends React.PureComponent {
 
     return (
       <ContentBox>
-        <InputRow>
-          {this._createLabeledInput(
-            'fixedColumnCount',
-            this._createEventHandler('fixedColumnCount', val => {
-              return val > columns.length - 1 ? columns.length - 1 : val;
-            }),
-          )}
-          {this._createLabeledInput(
-            'fixedRowCount',
-            this._createEventHandler('fixedRowCount', val => {
-              return val > rows.length - 1 ? rows.length - 1 : val;
-            }),
-          )}
-          {this._createLabeledInput(
-            'scrollToColumn',
-            this._onScrollToColumnChange,
-          )}
-          {this._createLabeledInput('scrollToRow', this._onScrollToRowChange)}
-          {this._createLabeledInput('rowCount', this._onScrollRowCountChange)}
-          {this._createLabeledInput(
-            'columnCount',
-            this._onScrollColumnCountChange,
-          )}
-          {this._createLabeledCheckBox('autoSort', event => {
-            this.setState({ autoSort: event.target.checked });
-          })}
-          {this._createLabeledCheckBox('multiple', event => {
-            this.setState({ multiple: event.target.checked });
-          })}
-          {this._createLabeledCheckBox(
-            'multipleShiftMode',
-            event => {
-              this.setState({ multipleShiftMode: event.target.checked });
-            },
-            !multiple,
-          )}
-        </InputRow>
-
-        <Container style={{ marginTop: 5 }}>
-          <FormLabel
-            label="value:"
-            inline
-            contentClassName={styles.textEllipsis}>
-            <div className={styles.textEllipsis}>
-              <code>{JSON.stringify(value.value, undefined, 2)}</code>
-            </div>
+        <Container inline>
+          <FormLabel label="Show config" inline>
+            <input type="checkbox" checked={showConfig} onChange={e => this.setState({ showConfig: e.target.checked })} />
           </FormLabel>
-          <Container inline>
-            <FormLabel label="index:" inline>
-              {value.index}
-            </FormLabel>
-            <FormLabel label="dataKey:" inline>
-              {value.dataKey}
-            </FormLabel>
-            {Array.isArray(value.value) && (
-              <FormLabel label="selected items:" inline>
-                {value.value.length}
-              </FormLabel>
-            )}
-          </Container>
-          <FormLabel label="rowData:" inline>
-            <code>{JSON.stringify(value.rowData, undefined, 2)}</code>
-          </FormLabel>
-          <FormLabel label="sortBy:" inline>
-            <code>{JSON.stringify(sortBy, undefined, 2)}</code>
-          </FormLabel>
-          <FormLabel label="scroll:" inline>
-            <code>{JSON.stringify(scroll, undefined, 2)}</code>
+          <FormLabel label="Show params" inline>
+            <input type="checkbox" checked={showParams} onChange={e => this.setState({ showParams: e.target.checked })} />
           </FormLabel>
         </Container>
+        {
+          showConfig && (
+            <InputRow>
+              {this._createLabeledInput(
+                'fixedColumnCount',
+                this._createEventHandler('fixedColumnCount', val => {
+                  return val > columns.length - 1 ? columns.length - 1 : val;
+                }),
+              )}
+              {this._createLabeledInput(
+                'fixedRowCount',
+                this._createEventHandler('fixedRowCount', val => {
+                  return val > rows.length - 1 ? rows.length - 1 : val;
+                }),
+              )}
+              {this._createLabeledInput(
+                'scrollToColumn',
+                this._onScrollToColumnChange,
+              )}
+              {this._createLabeledInput('scrollToRow', this._onScrollToRowChange)}
+              {this._createLabeledInput('rowCount', this._onScrollRowCountChange)}
+              {this._createLabeledInput(
+                'columnCount',
+                this._onScrollColumnCountChange,
+              )}
+              {this._createLabeledCheckBox('autoSort', event => {
+                this.setState({ autoSort: event.target.checked });
+              })}
+              {this._createLabeledCheckBox('multiple', event => {
+                this.setState({ multiple: event.target.checked });
+              })}
+              {this._createLabeledCheckBox(
+                'multipleShiftMode',
+                event => {
+                  this.setState({ multipleShiftMode: event.target.checked });
+                },
+                !multiple,
+              )}
+              {this._createLabeledCheckBox('sortableColumn', event => {
+                this.setState({ sortableColumn: event.target.checked });
+              })}
+              {this._createLabeledCheckBox('resizeColumn', event => {
+                this.setState({ resizeColumn: event.target.checked });
+              })}
+            </InputRow>
+          )
+        }
 
-        <div style={{ width: '100%', height: 360 }}>
+        {
+          showParams && (
+            <Container style={{ marginTop: 5 }}>
+              <FormLabel
+                label="value:"
+                inline
+                contentClassName={styles.textEllipsis}>
+                <div className={styles.textEllipsis}>
+                  <code>{JSON.stringify(value.value, undefined, 2)}</code>
+                </div>
+              </FormLabel>
+              <Container inline>
+                <FormLabel label="index:" inline>
+                  {value.index}
+                </FormLabel>
+                <FormLabel label="dataKey:" inline>
+                  {value.dataKey}
+                </FormLabel>
+                {Array.isArray(value.value) && (
+                  <FormLabel label="selected items:" inline>
+                    {value.value.length}
+                  </FormLabel>
+                )}
+              </Container>
+              <FormLabel label="rowData:" inline>
+                <code>{JSON.stringify(value.rowData, undefined, 2)}</code>
+              </FormLabel>
+              <FormLabel label="sortBy:" inline>
+                <code>{JSON.stringify(sortBy, undefined, 2)}</code>
+              </FormLabel>
+              <FormLabel label="scroll:" inline>
+                <code style={{ fontSize: 10 }}>{JSON.stringify(scroll, undefined, 2)}</code>
+              </FormLabel>
+            </Container>
+          )
+        }
+
+        <div style={{ width: '100%', height: 360, marginTop: 10 }}>
           <MultiGridTable
             fixedColumnCount={fixedColumnCount}
             fixedRowCount={fixedRowCount}
@@ -346,6 +375,11 @@ export default class MultiGridTableExample extends React.PureComponent {
             sorter={autoSort ? undefined : false}
             sortBy={sortBy.sortBy}
             sortDirection={sortBy.sortDirection}
+            sortableColumn={sortableColumn}
+            resizeColumn={resizeColumn}
+            onTableChange={(newColumns) => {
+              console.log('New Columns: ', newColumns);
+            }}
           />
         </div>
       </ContentBox>

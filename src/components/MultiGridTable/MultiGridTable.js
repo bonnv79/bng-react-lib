@@ -7,8 +7,10 @@ import _keyBy from 'lodash/keyBy';
 import _isEmpty from 'lodash/isEmpty';
 import _slice from 'lodash/slice';
 import _map from 'lodash/map';
+import _forEach from 'lodash/forEach';
 import RefMultiGrid from './RefMultiGrid';
 import clsx from 'clsx';
+import arrayMove from 'array-move';
 import {
   STYLE,
   STYLE_BOTTOM_LEFT_GRID,
@@ -26,7 +28,7 @@ const getMapColumns = columns => {
   const newColumns = [];
   let totalWidth = 0;
 
-  columns.forEach((col, index) => {
+  _forEach(columns, (col, index) => {
     let { width } = col;
     width = Number(width) || DEFAULT_COLUMN_WIDTH;
     newColumns[index] = {
@@ -36,7 +38,7 @@ const getMapColumns = columns => {
     totalWidth += width;
   });
 
-  newColumns.forEach((col, index) => {
+  _forEach(newColumns, (col, index) => {
     const { width } = col;
     newColumns[index].percent = width / totalWidth;
   });
@@ -67,10 +69,12 @@ class MultiGridTable extends React.PureComponent {
       multiple,
       value,
       fixedColumnCount,
+      scrollToColumn
     } = props;
+    const mapColumns = getMapColumns(columns);
     this.state = {
       originalColumns: columns,
-      columns: getMapColumns(columns),
+      columns: mapColumns,
       originalRows: rows,
       rows: getRows(rows, sortBy, sortDirection, sorter),
       originalValue: value,
@@ -82,12 +86,15 @@ class MultiGridTable extends React.PureComponent {
       hover: '',
       prevWidth: 0,
       prevFixedColumnCount: fixedColumnCount,
-      prevColumns: columns,
+      prevColumns: mapColumns,
       alignClassName: {
         right: this.getClassName('ReactVirtualized__MultiGridTable__Right'),
         center: this.getClassName('ReactVirtualized__MultiGridTable__Center'),
       },
       shiftIndex: null,
+      scrollLeft: 0,
+      scrollToColumn,
+      prevScrollToColumn: scrollToColumn,
     };
   }
 
@@ -123,6 +130,11 @@ class MultiGridTable extends React.PureComponent {
     if (props.value !== state.originalValue) {
       newState.value = getValue(props.multiple, props.value);
       newState.originalValue = props.value;
+    }
+
+    if (props.scrollToColumn !== state.prevScrollToColumn) {
+      newState.scrollToColumn = props.scrollToColumn;
+      newState.prevScrollToColumn = props.scrollToColumn;
     }
 
     return newState;
@@ -237,32 +249,105 @@ class MultiGridTable extends React.PureComponent {
     });
   };
 
+  onTableChange = (columns) => {
+    const { onTableChange } = this.props;
+    onTableChange(columns);
+  }
+
+  onDragStart = (columnIndex) => () => {
+    this.dragColumnIndex = columnIndex;
+  }
+
+  onDrop = (newIndex) => (e) => {
+    e.preventDefault();
+    const oldIndex = this.dragColumnIndex;
+
+    if (oldIndex !== newIndex) {
+      let { columns } = this.state;
+      columns = arrayMove(columns, oldIndex, newIndex);
+      columns = getMapColumns(columns);
+      this.setState({
+        columns
+      });
+      this.onTableChange(columns);
+    }
+    e.currentTarget.style.boxShadow = 'none';
+    e.currentTarget.style.border = 'none';
+    e.currentTarget.style.opacity = 1;
+  }
+
+  onDragOver = (e) => {
+    e.currentTarget.style.boxShadow = 'rgba(0, 0, 0, 0.24) 0px 3px 8px';
+    e.currentTarget.style.border = '2px dotted #2196f3';
+    e.currentTarget.style.opacity = 0.6;
+  }
+
+  onDragLeave = (e) => {
+    e.currentTarget.style.boxShadow = 'none';
+    e.currentTarget.style.border = 'none';
+    e.currentTarget.style.opacity = 1;
+  }
+
   headerCellRenderer = ({ key, columnIndex, style }) => {
+    const { resizeColumn, sortableColumn } = this.props;
     const { columns, sortBy, sortDirection, alignClassName } = this.state;
     const { dataKey, label, sort, align } = columns[columnIndex];
     const isSort = sortBy === dataKey;
     const ascSort = sortDirection === SORT_DIRECTIONS.ASC;
-
-    const sortByClass = this.getClassName(
-      'ReactVirtualized__MultiGridTable__SortBy',
-    );
-    const ascSortClass = this.getClassName(
-      'ReactVirtualized__MultiGridTable__AscSort',
-    );
-    const descSortClass = this.getClassName(
-      'ReactVirtualized__MultiGridTable__DescSort',
-    );
     const className = {};
 
     if (align && align !== 'left') {
       className[alignClassName[align]] = true;
     }
+    if (resizeColumn) {
+      className[this.getClassName('ReactVirtualized__MultiGridTable__HeaderResize')] = true;
+    }
+    if (sortableColumn) {
+      className[this.getClassName('ReactVirtualized__MultiGridTable__HeaderSortable')] = true;
+    }
 
     const classNameLabel = {
-      [sortByClass]: sort,
-      [ascSortClass]: isSort && ascSort,
-      [descSortClass]: isSort && !ascSort,
+      [this.getClassName('ReactVirtualized__MultiGridTable__SortBy')]: sort,
+      [this.getClassName('ReactVirtualized__MultiGridTable__AscSort')]: isSort && ascSort,
+      [this.getClassName('ReactVirtualized__MultiGridTable__DescSort')]: isSort && !ascSort,
     };
+
+    const onMouseMove = e => requestAnimationFrame(() => {
+      let { columns, scrollLeft } = this.state;
+
+      const { offsetLeft } = this.headerBeingResized || 0;
+      const width = scrollLeft + e.clientX - offsetLeft;
+
+      if ((width || width === 0) && columns[this.resizeIndex]) {
+        const size = Math.max(100, width) || 100;
+        columns[this.resizeIndex].width = size;
+
+        this.setState({
+          columns: columns.length > 100 ? [...columns] : getMapColumns(columns),
+          scrollToColumn: undefined
+        });
+      }
+    });
+
+    const onMouseUp = () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      this.headerBeingResized = null;
+      this.resizeIndex = null;
+      this.onTableChange(this.state.columns);
+    };
+
+    let sortableProps = {};
+
+    if (sortableColumn) {
+      sortableProps = {
+        draggable: true,
+        onDragStart: this.onDragStart(columnIndex),
+        onDrop: this.onDrop(columnIndex),
+        onDragOver: this.onDragOver,
+        onDragLeave: this.onDragLeave
+      };
+    }
 
     return (
       <div
@@ -272,21 +357,36 @@ class MultiGridTable extends React.PureComponent {
           this.getClassName('ReactVirtualized__MultiGridTable__HeaderCell'),
           className,
         )}
-        style={style}>
+        style={style}
+        {...sortableProps}
+      >
         <span
           tabIndex="0"
           role="button"
           aria-pressed="false"
           title={label}
           className={clsx(
-            this.getClassName(
-              'ReactVirtualized__MultiGridTable__NonePointerEvents',
-            ),
+            this.getClassName('ReactVirtualized__MultiGridTable__NonePointerEvents'),
             classNameLabel,
           )}
-          onClick={this.changeSort(dataKey)}>
+          onClick={this.changeSort(dataKey)}
+        >
           {label}
         </span>
+        {
+          resizeColumn && (
+            <span
+              className={this.getClassName('ReactVirtualized__MultiGridTable__ResizeHandle')}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                this.resizeIndex = columnIndex;
+                this.headerBeingResized = e.target.parentNode;
+                window.addEventListener('mousemove', onMouseMove);
+                window.addEventListener('mouseup', onMouseUp);
+              }}
+            />
+          )
+        }
       </div>
     );
   };
@@ -307,16 +407,9 @@ class MultiGridTable extends React.PureComponent {
     const id = rowData[rowKey];
     const selected = value && multiple ? value[id] : value === id;
 
-    const cellHoverClass = this.getClassName(
-      'ReactVirtualized__MultiGridTable__CellHover',
-    );
-    const cellSelectedClass = this.getClassName(
-      'ReactVirtualized__MultiGridTable__CellSelected',
-    );
-
     const className = {
-      [cellHoverClass]: hover === rowIndex,
-      [cellSelectedClass]: selected,
+      [this.getClassName('ReactVirtualized__MultiGridTable__CellHover')]: hover === rowIndex,
+      [this.getClassName('ReactVirtualized__MultiGridTable__CellSelected')]: selected,
     };
 
     if (align && align !== 'left') {
@@ -384,37 +477,73 @@ class MultiGridTable extends React.PureComponent {
     });
   };
 
+  setScrollLeft = value => {
+    const { scrollLeft } = this.state;
+    if (scrollLeft !== value) {
+      this.setState({
+        scrollLeft: value
+      });
+    }
+  };
+
+  onScroll = (props) => {
+    const { onScroll } = this.props;
+    onScroll(props);
+    this.setScrollLeft(props.scrollLeft);
+  }
+
   render() {
-    const { fixedRowCount, ...props } = this.props;
+    const { fixedRowCount, sortableColumn, ...props } = this.props;
     const {
       rows,
       columns,
       prevWidth,
       prevFixedColumnCount,
       prevColumns,
+      scrollLeft,
+      scrollToColumn
     } = this.state;
 
+    let sortableProps = {};
+
+    if (sortableColumn) {
+      sortableProps = {
+        onDragOver: (e) => {
+          e.preventDefault();
+        }
+      };
+    }
+
     return (
-      <AutoSizer>
-        {({ width, height }) => (
-          <RefMultiGrid
-            height={height}
-            width={width}
-            fixedRowCount={fixedRowCount + 1}
-            columnCount={columns.length}
-            columnWidth={this.getColumnWidth(width)}
-            rowCount={rows.length + 1}
-            cellRenderer={this.cellRenderer}
-            prevWidth={prevWidth}
-            setPrevWidth={this.setPrevWidth}
-            prevFixedColumnCount={prevFixedColumnCount}
-            setPrevFixedColumnCount={this.setPrevFixedColumnCount}
-            prevColumns={prevColumns}
-            setPrevColumns={this.setPrevColumns}
-            {...props}
-          />
-        )}
-      </AutoSizer>
+      <div
+        style={{ height: '100%', width: '100%' }}
+        {...sortableProps}
+      >
+        <AutoSizer>
+          {({ width, height }) => (
+            <RefMultiGrid
+              height={height}
+              width={width}
+              fixedRowCount={fixedRowCount + 1}
+              columnCount={columns.length}
+              columnWidth={this.getColumnWidth(width)}
+              rowCount={rows.length + 1}
+              cellRenderer={this.cellRenderer}
+              prevWidth={prevWidth}
+              setPrevWidth={this.setPrevWidth}
+              prevFixedColumnCount={prevFixedColumnCount}
+              setPrevFixedColumnCount={this.setPrevFixedColumnCount}
+              prevColumns={prevColumns}
+              setPrevColumns={this.setPrevColumns}
+              {...props}
+              columns={columns}
+              scrollLeft={scrollLeft}
+              scrollToColumn={scrollToColumn}
+              onScroll={this.onScroll}
+            />
+          )}
+        </AutoSizer>
+      </div>
     );
   }
 }
@@ -432,8 +561,8 @@ MultiGridTable.defaultProps = {
   classes: styles,
   fixedColumnCount: 0,
   fixedRowCount: 0,
-  scrollToColumn: 0,
-  scrollToRow: 0,
+  scrollToColumn: undefined,
+  scrollToRow: undefined,
   rowHeight: 35,
   rowKey: 'id',
   value: '',
@@ -447,6 +576,9 @@ MultiGridTable.defaultProps = {
   },
   sortBy: '',
   sortDirection: '',
+  sortableColumn: false,
+  resizeColumn: false,
+  onTableChange: () => { }
 };
 
 MultiGridTable.propTypes = {
@@ -486,6 +618,9 @@ MultiGridTable.propTypes = {
     null,
     false,
   ]),
+  sortableColumn: PropTypes.bool,
+  resizeColumn: PropTypes.bool,
+  onTableChange: PropTypes.func,
 };
 
 export default MultiGridTable;

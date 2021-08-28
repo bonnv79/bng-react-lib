@@ -1,5 +1,9 @@
 ## Changelog
 
+##### 1.7.0
+
+- Add sortable and resize columns for MultiGridTable (Add new parameters: sortableColumn, resizeColumn, onTableChange)
+
 ##### 1.6.0
 
 - Add SortableVirtualList component
