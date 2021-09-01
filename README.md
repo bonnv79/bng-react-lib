@@ -9,6 +9,15 @@
 ```bash
 npm install --save bng-react-lib
 ```
+## `Important Notes`
+
+- `MultiGridTable` is replaced by [react-virtualized-multi-grid - npm](https://www.npmjs.com/package/react-virtualized-multi-grid)
+
+- `ReactSortableTree` is replaced by [react-sortable-tree-node - npm](https://www.npmjs.com/package/react-sortable-tree-node)
+
+- `VirtualizedSelect` is replaced by [react-virtua-select - npm](https://www.npmjs.com/package/react-virtua-select)
+
+- `utils` is replaced by [bnv-utils - npm](https://www.npmjs.com/package/bnv-utils)
 
 ## Demo
 <a href="https://bonnv79.github.io/bng-react-lib/">Click open demo<a/>

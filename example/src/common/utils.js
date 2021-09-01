@@ -9,3 +9,7 @@ export function getURL(url) {
 export function getDemoURL(id = '') {
   return `/${id}`;
 }
+
+export function getNpmUrl(path) {
+  return `https://www.npmjs.com/package/${path}`;
+}
