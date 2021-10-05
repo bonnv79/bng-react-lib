@@ -65,6 +65,42 @@ const {
 
 - SortableVirtualList
 
+## Develop
+
+In the project directory, you can run:
+
+### Run library
+
+#### `npm install`
+
+#### `npm start`
+
+### Run example
+
+#### `cd ./example`
+
+#### `npm install`
+
+#### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+## Deploy
+
+You run the syntax:
+
+#### `npm run deploy`
+
+## Publish
+
+You run the syntax:
+
+#### `npm publish`
+
 ## License
 
 MIT © [bonnv79](https://github.com/bonnv79)

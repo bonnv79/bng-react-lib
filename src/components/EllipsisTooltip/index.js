@@ -12,16 +12,6 @@ class EllipsisTooltip extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
-    this.updateTooltip();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.children !== prevProps.children) {
-      this.updateTooltip();
-    }
-  }
-
   updateTooltip = () => {
     if (this.ref && this.ref.current) {
       const { offsetWidth, scrollWidth } = this.ref.current;
@@ -43,6 +33,7 @@ class EllipsisTooltip extends React.PureComponent {
         ref={this.ref}
         title={open ? title || children : ''}
         className={clsx('tooltip', classes.tooltip)}
+        onMouseEnter={this.updateTooltip}
         {...props}
       >
         {children}

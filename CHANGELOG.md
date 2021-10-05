@@ -1,5 +1,9 @@
 ## Changelog
 
+##### 1.7.2
+
+- Modify EllipsisTooltip and add EllipsisTooltip for MultiGridTableExample
+
 ##### 1.7.1
 
 - Update Important Notes

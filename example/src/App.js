@@ -10,6 +10,7 @@ import EllipsisTooltip from './demo/EllipsisTooltip.example';
 import SortableVirtualList from './demo/SortableVirtualList.example';
 import 'bng-react-lib/dist/index.css';
 import { getURL } from './common/utils';
+import packageJson from '../package.json';
 
 const data = [
   {
@@ -70,7 +71,7 @@ const data = [
 ];
 
 const App = () => {
-  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version="1.7.0" />;
+  return <Home title='BNG React Lib' subTitle="Welcome to example page" data={data} version={packageJson.version} />;
 }
 
 export default App

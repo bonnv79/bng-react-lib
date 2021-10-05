@@ -4,7 +4,7 @@ import {
   ContentBox,
 } from '../common/ContentBox';
 import { LabeledInput, InputRow } from '../common/LabeledInput';
-import { MultiGridTable } from 'bng-react-lib';
+import { MultiGridTable, EllipsisTooltip } from 'bng-react-lib';
 import { Container, FormLabel } from '../common/Form';
 import styles from './MultiGridTable.module.css';
 
@@ -52,6 +52,7 @@ const initColumns = [
     dataKey: 'dessert',
     sort: true,
     align: 'left',
+    render: (value) => <EllipsisTooltip>{value}</EllipsisTooltip>,
   },
   {
     width: 120,
