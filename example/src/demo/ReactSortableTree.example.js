@@ -1,6 +1,7 @@
 import React from 'react';
 import { ReactSortableTree } from 'bng-react-lib';
 import FormLabel from '../common/FormLabel';
+import styles from './ReactSortableTree.module.css';
 
 const getTreeData = (rowCount) => {
   const data = [];
@@ -25,7 +26,87 @@ const getTreeData = (rowCount) => {
       children: [
         {
           id: 'item-20',
-          title: 'item 20'
+          title: 'item 20',
+          expanded: true,
+          isDirectory: true,
+          children: [
+            {
+              id: 'item-201',
+              title: 'item 201',
+              expanded: true,
+              isDirectory: true,
+              children: [
+                {
+                  id: 'item-202',
+                  title: 'item 202',
+                  expanded: true,
+                  isDirectory: true,
+                  children: [
+                    {
+                      id: 'item-203',
+                      title: 'item 203',
+                      expanded: true,
+                      isDirectory: true,
+                      children: [
+                        {
+                          id: 'item-204',
+                          title: 'item 204',
+                          expanded: true,
+                          isDirectory: true,
+                          children: [
+                            {
+                              id: 'item-205',
+                              title: 'item 205',
+                              expanded: true,
+                              isDirectory: true,
+                              children: [
+                                {
+                                  id: 'item-206',
+                                  title: 'item 206',
+                                  expanded: true,
+                                  isDirectory: true,
+                                  children: [
+                                    {
+                                      id: 'item-207',
+                                      title: 'item 207',
+                                      expanded: true,
+                                      isDirectory: true,
+                                      children: [
+                                        {
+                                          id: 'item-208',
+                                          title: 'item 208',
+                                          expanded: true,
+                                          isDirectory: true,
+                                          children: [
+                                            {
+                                              id: 'item-209',
+                                              title: 'item 209',
+                                              expanded: true,
+                                              isDirectory: true,
+                                              children: [
+                                                {
+                                                  id: 'item-2010',
+                                                  title: 'item 2010',
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         {
           id: 'item-21',
@@ -41,7 +122,7 @@ const getTreeData = (rowCount) => {
 
   for (let i = 0; i < rowCount; i += 1) {
     data.push(treeData[i] || {
-      id: `item-${i}`,
+      id: `item-${i}-auto`,
       title: `item ${i}`
     })
   }
@@ -211,6 +292,7 @@ export default function ReactSortableTreeExample() {
           searchFinishCallback={searchFinishCallback}
           generateNodeProps={generate ? generateNodeProps : undefined}
           maxDepth={maxDepth ? Number(maxDepth) : undefined}
+          className={styles.treeRoot}
         />
       </div>
     </div>
